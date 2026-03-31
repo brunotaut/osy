@@ -1,0 +1,2548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Counter-UAS Control Center — UX/UI Reference</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#080c10;--bg-2:#0d1117;--bg-3:#161b22;--bg-4:#1c2128;
+  --border:#21262d;--border-2:#30363d;
+  --text-1:#f0f6fc;--text-2:#c9d1d9;--text-3:#8b949e;--text-4:#484f58;
+  --blue:#58a6ff;--blue-bg:#1c2a3a;--blue-bdr:#1f4068;
+  --green:#3fb950;--green-bg:#1a2a1a;--green-bdr:#1f4028;
+  --amber:#e3b341;--amber-bg:#2a2010;--amber-bdr:#5a4510;
+  --purple:#d2a8ff;--purple-bg:#2a1c2a;--purple-bdr:#3d1f5a;
+  --orange:#f0883e;--orange-bg:#2a1a10;--orange-bdr:#5a3010;
+  --red:#f85149;--red-bg:#2d1b1b;--red-bdr:#6e2020;
+  --teal:#39d3c3;--pink:#ff7b72;
+}
+body{font-family:'IBM Plex Sans',-apple-system,sans-serif;background:var(--bg);color:var(--text-2);line-height:1.65;font-size:14px}
+
+/* COVER */
+.cover{border-bottom:1px solid var(--border);padding:60px 72px 52px;max-width:1080px;margin:0 auto;position:relative}
+.cover::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 80% 50%,rgba(88,166,255,.04) 0%,transparent 70%);pointer-events:none}
+.cover-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.cover-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--blue)}
+h1{font-size:34px;font-weight:600;color:var(--text-1);line-height:1.18;margin-bottom:14px;letter-spacing:-.02em}
+.cover-sub{color:var(--text-3);font-size:15px;margin-bottom:36px;max-width:560px}
+.cover-meta{display:flex;gap:32px;margin-bottom:36px;flex-wrap:wrap}
+.meta-item{display:flex;flex-direction:column;gap:3px}
+.meta-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-4)}
+.meta-value{font-size:13px;color:var(--text-2);font-weight:500}
+.cover-pills{display:flex;flex-wrap:wrap;gap:7px}
+.pill{background:var(--bg-3);border:1px solid var(--border);border-radius:20px;padding:4px 13px;font-size:11px;color:var(--text-3);font-family:'IBM Plex Mono',monospace;transition:border-color .15s,color .15s,background .15s;text-decoration:none;display:inline-block;cursor:pointer}
+.pill:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
+.pill:active{opacity:.75}
+.pill.hi{border-color:var(--blue-bdr);color:var(--blue);background:var(--blue-bg)}
+.pill.hi:hover{border-color:#79baff;color:#79baff;background:#243a52}
+
+/* NAV */
+.toc-bar{border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:100}
+.toc-inner{max-width:1080px;margin:0 auto;padding:0 72px;display:flex;overflow-x:auto;scrollbar-width:none}
+.toc-inner::-webkit-scrollbar{display:none}
+.toc-link{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4);text-decoration:none;padding:12px 14px;white-space:nowrap;border-bottom:2px solid transparent;transition:color .2s,border-color .2s}
+.toc-link:hover{color:var(--text-2);border-color:var(--border-2)}
+.toc-sep{color:var(--border);padding:12px 0;font-size:12px}
+
+/* MAIN */
+main{max-width:1080px;margin:0 auto;padding:0 72px 100px}
+
+/* SECTION */
+.section{margin-top:64px}
+.section-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.section-eyebrow .num{color:var(--text-4)}
+h2{font-size:24px;font-weight:600;color:var(--text-1);margin-bottom:6px;letter-spacing:-.015em}
+.section-desc{color:var(--text-3);font-size:13px}
+.divider{height:1px;background:var(--border);margin:14px 0 28px}
+
+/* CATEGORY HEADER */
+.cat-header{display:flex;align-items:center;gap:14px;margin-bottom:24px;margin-top:48px}
+.cat-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-4);white-space:nowrap}
+.cat-line{flex:1;height:1px;background:var(--border)}
+
+/* PRODUCT CARD */
+.product-card{background:var(--bg-2);border:1px solid var(--border);border-radius:10px;margin-bottom:32px;overflow:hidden;transition:border-color .2s}
+.product-card:hover{border-color:var(--border-2)}
+
+.product-header{display:flex;align-items:flex-start;justify-content:space-between;padding:20px 26px 16px;border-bottom:1px solid var(--border);gap:20px;background:var(--bg-3);flex-wrap:wrap}
+.product-meta{flex:1;min-width:200px}
+.product-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-4);margin-bottom:3px}
+.product-type{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-4);margin-bottom:3px}
+.product-name{font-size:17px;font-weight:600;color:var(--text-1);margin-bottom:5px}
+.product-url{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--blue);text-decoration:none}
+.product-url:hover{text-decoration:underline}
+.header-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.product-badges{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end}
+.fact-tags{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end;margin-top:2px}
+.product-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.fact-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 8px;border-radius:4px;white-space:nowrap;border:1px solid var(--border-2);color:var(--text-4);background:var(--bg-4)}
+.tag-cuas{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bdr)}
+.tag-drone{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bdr)}
+.tag-video{background:var(--purple-bg);color:var(--purple);border:1px solid var(--purple-bdr)}
+.tag-gcs{background:var(--orange-bg);color:var(--orange);border:1px solid var(--orange-bdr)}
+.tag-ai{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-bdr)}
+.tag-rf{background:#1a1a2a;color:#a78bfa;border:1px solid #3d3060}
+.tag-net{background:var(--red-bg);color:var(--red);border:1px solid var(--red-bdr)}
+.tag-daa{background:#1a2a20;color:var(--teal);border:1px solid #1f5040}
+
+/* STATS STRIP */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
+.stat-cell{padding:11px 14px;border-right:1px solid var(--border);background:var(--bg-3)}
+.stat-cell:last-child{border-right:none}
+.stat-val{font-size:14px;font-weight:600;color:var(--text-1);font-family:'IBM Plex Mono',monospace}
+.stat-label{font-size:10px;color:var(--text-4);margin-top:1px}
+
+/* CARD BODY — stacked: screenshots top, columns below */
+.product-body{display:flex;flex-direction:column}
+
+/* SCREENSHOTS ROW — full width, 2-col grid of image slots */
+.product-screenshot{border-bottom:1px solid var(--border);padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.screenshot-block{display:flex;flex-direction:column;gap:5px}
+.screenshot-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:3px}
+.screenshot-caption{font-size:11px;color:var(--text-4);font-style:italic;line-height:1.45}
+.img-slot{width:100%;min-height:160px;border-radius:5px;border:1.5px dashed var(--border-2);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:14px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.img-slot:hover{border-color:var(--blue);background:rgba(88,166,255,.04)}
+.slot-plus{font-size:22px;color:var(--border-2);line-height:1}
+.slot-title{font-size:11px;font-weight:500;color:var(--text-4)}
+.slot-url{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--blue);word-break:break-all;margin-top:1px;opacity:.7}
+.slot-hint{font-size:9px;color:var(--text-4);margin-top:1px}
+
+/* COLUMNS ROW — 2 equal columns below screenshots, each 50% */
+.product-columns{display:grid;grid-template-columns:1fr 1fr}
+
+/* CORE INFO COL */
+.product-core{border-right:1px solid var(--border);padding:18px 20px}
+.core-section{margin-bottom:18px}
+.core-label{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-4);margin-bottom:8px}
+.core-desc{font-size:12px;color:var(--text-2);line-height:1.6;margin-bottom:0}
+.cap-list{list-style:none;display:flex;flex-direction:column;gap:4px}
+.cap-list li{font-size:12px;color:var(--text-2);padding-left:13px;position:relative;line-height:1.5}
+.cap-list li::before{content:'—';position:absolute;left:0;color:var(--text-4);font-size:10px;top:2px}
+.arch-tags{display:flex;flex-wrap:wrap;gap:3px}
+.arch-tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;border-radius:4px;border:1px solid var(--border-2);color:var(--text-3)}
+.rel-wrap{display:flex;flex-direction:column;gap:6px}
+.rel-row{display:flex;align-items:center;gap:8px}
+.rel-label{font-size:11px;color:var(--text-3);width:130px;flex-shrink:0}
+.bar-track{flex:1;height:3px;background:var(--border);border-radius:2px}
+.bar-fill{height:100%;border-radius:2px}
+.distinction-box{margin-top:14px;padding:10px 13px;background:rgba(248,81,73,.05);border:1px solid rgba(248,81,73,.15);border-left:3px solid var(--red);border-radius:0 5px 5px 0;font-size:11px;color:var(--text-2);line-height:1.55}
+.distinction-box .d-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:4px}
+
+/* UX LEARNINGS COL */
+.product-learnings{padding:18px 20px}
+.learning-group{margin-bottom:16px}
+.learning-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-4);margin-bottom:8px}
+.learning-item{display:flex;gap:9px;margin-bottom:7px;align-items:flex-start}
+.bullet{width:5px;height:5px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.b-blue{background:var(--blue)}.b-green{background:var(--green)}.b-amber{background:var(--amber)}
+.b-purple{background:var(--purple)}.b-orange{background:var(--orange)}.b-teal{background:var(--teal)}.b-red{background:var(--red)}
+.learning-text{font-size:12px;color:var(--text-2);line-height:1.55}
+.learning-text strong{color:var(--text-1);font-weight:500}
+.learning-text em{color:var(--text-3);font-style:normal}
+.insight-box{margin-top:12px;padding:11px 14px;background:rgba(88,166,255,.05);border:1px solid rgba(88,166,255,.15);border-left:3px solid var(--blue);border-radius:0 5px 5px 0;font-size:11px;color:var(--text-2);line-height:1.55}
+.insight-box .i-label{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:4px}
+.insight-box strong{color:var(--text-1);font-weight:500}
+
+/* TAKEAWAYS */
+.takeaway-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+.takeaway-card{background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:18px;border-top:3px solid}
+.t-blue{border-top-color:var(--blue)}.t-green{border-top-color:var(--green)}.t-amber{border-top-color:var(--amber)}
+.t-purple{border-top-color:var(--purple)}.t-orange{border-top-color:var(--orange)}.t-teal{border-top-color:var(--teal)}
+.t-red{border-top-color:var(--red)}.t-pink{border-top-color:var(--pink)}.t-gray{border-top-color:var(--text-4)}
+.takeaway-number{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;color:var(--border-2);margin-bottom:6px}
+.takeaway-heading{font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:8px;line-height:1.35}
+.takeaway-body{font-size:12px;color:var(--text-3);line-height:1.6}
+.takeaway-source{margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--blue);letter-spacing:.06em;text-transform:uppercase}
+
+/* DECISIONS TABLE */
+.decision-table{width:100%;border-collapse:collapse;margin-top:20px;font-size:13px}
+.decision-table th{background:var(--bg-3);color:var(--text-3);font-weight:500;text-align:left;padding:10px 14px;border:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
+.decision-table td{padding:11px 14px;border:1px solid var(--border);color:var(--text-2);vertical-align:top;line-height:1.55}
+.decision-table tr:nth-child(odd) td{background:var(--bg-2)}
+.decision-table tr:nth-child(even) td{background:var(--bg-3)}
+.chip{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 7px;border-radius:10px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-bdr);white-space:nowrap;margin:1px 2px}
+
+/* ANTI-PATTERNS */
+.antipattern-list{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.antipattern-item{display:flex;gap:12px;background:var(--bg-2);border:1px solid var(--border);border-left:3px solid var(--red);border-radius:6px;padding:13px 16px}
+.anti-x{font-size:15px;color:var(--red);flex-shrink:0;margin-top:1px;font-weight:600}
+.anti-text{font-size:13px;color:var(--text-2);line-height:1.55}
+.anti-text strong{color:var(--text-1);font-weight:500}
+
+/* FOOTNOTE */
+.footnote{margin-top:64px;padding-top:24px;border-top:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-4);display:flex;justify-content:space-between}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .cover,main{padding-left:20px;padding-right:20px}
+  .toc-inner{padding:0 20px}
+  .product-screenshot{grid-template-columns:1fr}
+  .product-columns{grid-template-columns:1fr}
+  .product-core{border-right:none;border-bottom:1px solid var(--border)}
+  .takeaway-grid{grid-template-columns:1fr}
+  .stats-strip{grid-template-columns:repeat(2,1fr)}
+  h1{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-eyebrow">Counter-UAS Control Center — Research</div>
+  <h1>UX/UI Reference:<br>Competitive Solutions</h1>
+  <div class="cover-sub">Screenshots, per-product analysis, and unified design principles across 14 systems — combined from two research threads.</div>
+  <div class="cover-meta">
+    <div class="meta-item"><span class="meta-label">Platforms analyzed</span><span class="meta-value">14 systems</span></div>
+    <div class="meta-item"><span class="meta-label">Categories</span><span class="meta-value">C2 · GCS · RF/SDR · Comms · DAA</span></div>
+    <div class="meta-item"><span class="meta-label">Design takeaways</span><span class="meta-value">12 validated patterns</span></div>
+    <div class="meta-item"><span class="meta-label">Anti-patterns</span><span class="meta-value">8 documented</span></div>
+  </div>
+  <div class="cover-pills">
+    <a class="pill hi" href="#p-droneshield">DroneShield DroneSentry-C2</a>
+    <a class="pill hi" href="#p-hensoldt">Hensoldt Elysion</a>
+    <a class="pill hi" href="#p-cambridge">Cambridge Pixel VSD-C2</a>
+    <a class="pill hi" href="#p-xtend">XTEND XOS</a>
+    <a class="pill hi" href="#p-eyeson">Eyeson C2</a>
+    <a class="pill hi" href="#p-auterion">Auterion Mission Control</a>
+    <a class="pill hi" href="#p-walaris">Walaris AirScout Verify</a>
+    <a class="pill hi" href="#p-sentrycs">Sentrycs CoRF</a>
+    <a class="pill hi" href="#p-iris">Iris Automation Casia</a>
+    <a class="pill hi" href="#p-aaronia">Aaronia AARTOS</a>
+    <a class="pill hi" href="#p-silvus">Silvus StreamCaster</a>
+    <a class="pill hi" href="#p-dedrone">Dedrone DedroneTracker.AI</a>
+    <a class="pill hi" href="#p-anduril">Anduril Lattice OS</a>
+    <a class="pill hi" href="#p-palantir">Palantir AIP / Maven</a>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="toc-bar">
+  <div class="toc-inner">
+    <a class="toc-link" href="#cat-c2">C2 Platforms</a>
+    <span class="toc-sep">·</span>
+    <a class="toc-link" href="#cat-gcs">GCS / Drone Control</a>
+    <span class="toc-sep">·</span>
+    <a class="toc-link" href="#cat-sensor">Sensor Systems</a>
+    <span class="toc-sep">·</span>
+    <a class="toc-link" href="#cat-infra">Infrastructure</a>
+    <span class="toc-sep">·</span>
+    <a class="toc-link" href="#takeaways">Takeaways</a>
+    <span class="toc-sep">·</span>
+    <a class="toc-link" href="#decisions">Decisions</a>
+    <span class="toc-sep">·</span>
+    <a class="toc-link" href="#cat-aspirational">Aspirations</a>
+    <span class="toc-sep">·</span>
+    <a class="toc-link" href="#antipatterns">Anti-patterns</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ══════ CAT A ══════ -->
+<div class="cat-header" id="cat-c2">
+  <span class="cat-label">Category A</span><div class="cat-line"></div>
+  <span class="cat-label">C2 Platforms — Direct Competitors</span><div class="cat-line"></div>
+</div>
+
+<!-- ─── P01 DRONESHIELD ─── -->
+<div class="product-card" id="p-droneshield">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P01</div>
+      <div class="product-type">Counter-UAS Command &amp; Control Platform</div>
+      <div class="product-name">DroneShield — DroneSentry-C2</div>
+      <a class="product-url" href="https://www.droneshield.com/products-software" target="_blank">droneshield.com/products-software</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-cuas">C-UAS · C2</span>
+        <span class="product-tag tag-cuas">Multi-site</span>
+        <span class="product-tag tag-drone">ASX Listed</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Version 11</span>
+        <span class="fact-tag">3 tiers: Tactical · Site · Enterprise</span>
+        <span class="fact-tag">NATO Eastern Flank 2026</span>
+        <span class="fact-tag">SAPIENT protocol</span>
+        <span class="fact-tag">MIL-STD-2525</span>
+        <span class="fact-tag">SaaS + air-gapped</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">v11</div><div class="stat-label">Current platform version</div></div>
+    <div class="stat-cell"><div class="stat-val">3 tiers</div><div class="stat-label">Tactical · Site · Enterprise</div></div>
+    <div class="stat-cell"><div class="stat-val">NATO flank</div><div class="stat-label">First C2E deploy 2026</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★★</div><div class="stat-label">Design quality</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Main dashboard</div>
+        <div class="img-slot" id="slot-ds1" onclick="pickImage('slot-ds1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">droneshield.com/products-software</div>
+        <div class="slot-hint">Dark map · fused threat tracks · Actions panel · mode bar</div>
+      </div>
+        <div class="screenshot-caption">Dark satellite map · sensor-fused threat tracks · consolidated Actions panel · mode bar</div>
+      </div>
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Tablet / on-the-move view</div>
+        <div class="img-slot" id="slot-ds2" onclick="pickImage('slot-ds2')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">Search: "DroneSentry-C2 tablet v10 2024"</div>
+        <div class="slot-hint">Simplified on-the-move layout</div>
+      </div>
+        <div class="screenshot-caption">Tablet variant — stripped layout for mobile/vehicle operators</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">Browser-based C2 platform that fuses RF, radar, acoustic, and optical sensor data into a single real-time operational picture on a map. Covers the full detect → verify → respond workflow. The most direct architectural equivalent to our system.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>SensorFusionAI — sensor-agnostic 3D data fusion engine, sold standalone</li>
+          <li>DroneOptID — auto-slews PTZ camera to target, AI classifies and tracks</li>
+          <li>ThreatAI — risk-prioritized threat scoring from all sensor inputs</li>
+          <li>Digital twin site planner for pre-deployment configuration</li>
+          <li>In-place settings editing — no navigation away from monitoring view</li>
+          <li>SAPIENT protocol for NATO C2 interoperability</li>
+          <li>MIL-STD-2525 iconography + MGRS grid (optional)</li>
+          <li>Air-gapped on-premises OR secure cloud hosting</li>
+          <li>Multi-site enterprise dashboard (C2 Enterprise, Oct 2025)</li>
+          <li>Desktop + tablet parity — full redesign in v10 (2024)</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">Browser-based frontend</span>
+          <span class="arch-tag">On-prem server</span>
+          <span class="arch-tag">Cloud option</span>
+          <span class="arch-tag">REST + WebSocket</span>
+          <span class="arch-tag">SaaS subscription</span>
+          <span class="arch-tag">Open sensor API</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">Architecture match</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Feature overlap</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">UI reference value</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Integration model</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--blue)"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Single "Actions" panel</strong> — all operator responses consolidated in one place. No hunting across panels during a 10-second response window.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Mode selector in top bar</strong> — Calibration / Monitor / Operational. System state always visible, always one click away.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>ThreatAI confidence score</strong> per detection — growing threat rating as sensors confirm. Not just "drone detected."</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>In-place settings editing</strong> — the core v10 redesign insight. Modify settings without ever leaving the monitoring view.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Digital twin site planner</strong> — deploy sensors virtually before going to site. Strong reference for our site configuration UX.</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">All interceptor commands in a single always-visible panel that activates when a target is selected on the map.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Top bar always shows: current mode, active target count, system health. Never require navigation to check status.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our closest direct competitor — their v10 redesign is the primary UX benchmark. Study the "no navigation away" principle above all else.</div></div>
+      </div>
+      <div class="insight-box">
+        <div class="i-label">Key lesson</div>
+        DroneSentry-C2's biggest product insight was not a feature — it was a constraint: <strong>operators must never leave the monitoring view to do anything</strong>. Every settings panel, every action, every configuration must be accessible in-context. This one principle drove their entire v10 redesign and is the single most important UX lesson from this research.
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ─── P02 HENSOLDT ─── -->
+<div class="product-card" id="p-hensoldt">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P02</div>
+      <div class="product-type">Military C-UAS — Multi-sensor Fusion Software</div>
+      <div class="product-name">Hensoldt — Elysion C-UAS Mission Core</div>
+      <a class="product-url" href="https://www.hensoldt.net/domains/land/protection/counter-UAS" target="_blank">hensoldt.net/counter-UAS</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-cuas">Military · Multi-sensor</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">German defense prime</span>
+        <span class="fact-tag">Single-operator design</span>
+        <span class="fact-tag">24/7 autonomous detection</span>
+        <span class="fact-tag">Radar+RF+EO+Acoustic fusion</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">1 operator</div><div class="stat-label">Designed for single op</div></div>
+    <div class="stat-cell"><div class="stat-val">24/7</div><div class="stat-label">Autonomous detection chain</div></div>
+    <div class="stat-cell"><div class="stat-val">4 sensor types</div><div class="stat-label">Radar · RF · EO · Acoustic</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★★</div><div class="stat-label">Design quality</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Mission Core display</div>
+        <div class="img-slot" id="slot-h1" onclick="pickImage('slot-h1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">hensoldt.net/counter-UAS</div>
+        <div class="slot-hint">Map-based overview · fused multi-sensor tracks · single-operator layout</div>
+      </div>
+        <div class="screenshot-caption">Map overview · fused radar/RF/optical/acoustic tracks · decision-support framing</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">Military-grade C-UAS software from German defense prime Hensoldt. Designed from the ground up for a single operator to manage a fully automated 24/7 detection and response chain. The system handles sub-tasks autonomously and surfaces only decision points to the operator.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>Single-operator design — interface complexity capped to what one person can manage</li>
+          <li>24/7 autonomous detection chain — AI handles detection, tracks, and alerts</li>
+          <li>Fused track object — radar + RF + optics + acoustic merged into one map object per threat</li>
+          <li>Decision-support framing — every alert presented as an action choice, not data</li>
+          <li>Automated 24/7 scanning with operator-on-the-loop model</li>
+          <li>Configurable automated response rules per zone and threat type</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">Military-grade</span>
+          <span class="arch-tag">Multi-sensor fusion</span>
+          <span class="arch-tag">Single-operator optimized</span>
+          <span class="arch-tag">Automated detection chain</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">Architecture match</span><div class="bar-track"><div class="bar-fill" style="width:82%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Feature overlap</span><div class="bar-track"><div class="bar-fill" style="width:78%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">UI reference value</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">UX philosophy</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--blue)"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Single-operator design</strong> — interface complexity capped to what one person can manage. No feature sprawl.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Operator-on-the-loop</strong> — AI handles detection, camera slewing, and tracking by default. Operator confirms, overrides, or escalates.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Fused track object</strong> — radar, RF, optics, acoustic merged into one map object per threat. No separate sensor panels.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Decision-support framing</strong> — interface shows "what should I do next" not "here is all the raw data."</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">One fused target object per threat — our system merges radar + RF + acoustic; operator sees the result, not the inputs.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Frame every alert as a decision prompt: "Drone detected — [Verify] [Launch interceptor] [Dismiss]." Not just a log entry.</div></div>
+      </div>
+      <div class="insight-box">
+        <div class="i-label">Key lesson</div>
+        Elysion's principle of capping interface complexity to <strong>what one operator can manage</strong> is more important than any individual feature. Every element added to our UI has a cognitive cost. If an operator needs two people to use the system comfortably, the UI has failed.
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ─── P03 CAMBRIDGE PIXEL ─── -->
+<div class="product-card" id="p-cambridge">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P03</div>
+      <div class="product-type">C2 Operator Display Software — Multi-sensor</div>
+      <div class="product-name">Cambridge Pixel — VSD-C2</div>
+      <a class="product-url" href="https://cambridgepixel.com/products/display-applications/vsd/" target="_blank">cambridgepixel.com/vsd</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-cuas">C2 · Radar · Camera</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">UK defense software</span>
+        <span class="fact-tag">PPI radar display</span>
+        <span class="fact-tag">Slew-to-cue</span>
+        <span class="fact-tag">360° panorama window</span>
+        <span class="fact-tag">2D/3D map toggle</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">Multi-pane</div><div class="stat-label">Configurable layout</div></div>
+    <div class="stat-cell"><div class="stat-val">PPI + 2D/3D</div><div class="stat-label">Radar + map views</div></div>
+    <div class="stat-cell"><div class="stat-val">Slew-to-cue</div><div class="stat-label">Map click → camera points</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★</div><div class="stat-label">Design quality</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Operator display</div>
+        <div class="img-slot" id="slot-cp1" onclick="pickImage('slot-cp1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">cambridgepixel.com/vsd</div>
+        <div class="slot-hint">Multi-pane: PPI radar + camera feeds + 2D/3D map</div>
+      </div>
+        <div class="screenshot-caption">Multi-pane layout · PPI radar sweep · live camera feeds · 2D/3D map toggle</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">Multi-sensor operator display and C2 software combining PPI radar visualization, camera feeds, and a 2D/3D map. Notable for slew-to-cue (clicking a radar track commands the camera) and a 360° panorama orientation window. Highly configurable — which is both its strength and weakness.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>Multi-pane widget architecture — map, PPI radar, camera, target list as discrete widgets</li>
+          <li>Slew-to-cue — clicking radar track on map immediately points nearest camera</li>
+          <li>360° panorama window — static orientation image for fast landmark identification</li>
+          <li>2D/3D map toggle for different situational awareness modes</li>
+          <li>Fully customisable layout (also an anti-pattern — see below)</li>
+          <li>Multi-sensor track fusion with confidence weighting</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">Desktop application</span>
+          <span class="arch-tag">Widget-based layout</span>
+          <span class="arch-tag">Radar + camera + map</span>
+          <span class="arch-tag">Multi-sensor fusion</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">Slew-to-cue model</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Radar visualization ref</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">UI design reference</span><div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Architecture match</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--blue)"></div></div></div>
+        </div>
+      </div>
+      <div class="distinction-box">
+        <div class="d-label">Important distinction</div>
+        VSD-C2's unlimited layout customisation is a documented weakness that operators have struggled with under stress. We should adopt slew-to-cue as a first-class feature, but explicitly <em>reject</em> the free-form window model — locking our layout to 3 operational presets instead.
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Slew-to-cue from map</strong> — clicking a radar track on the map immediately commands the nearest camera to that coordinate. This is the right default behavior.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>360° panorama window</strong> — static context image captured at setup. Operators orient cameras to familiar landmarks quickly.</div></div>
+        <div class="learning-item"><div class="bullet b-red"></div><div class="learning-text"><strong>Anti-pattern — avoid:</strong> highly configurable but requires training. Free-form window management is a weakness, not a feature. <em>Learn the slew-to-cue; avoid the layout chaos.</em></div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Slew-to-cue as first-class gesture: tap any target on map → camera auto-points. Default behavior, not an advanced feature.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Avoid unlimited layout customisation. 2–3 fixed presets. Free-form windows = cognitive overhead during incidents.</div></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ─── P04 EYESON ─── -->
+<div class="product-card" id="p-eyeson">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P04</div>
+      <div class="product-type">Real-time Omnimedia Communication — Defense C2 Use Case</div>
+      <div class="product-name">Eyeson — Command &amp; Control Situation Room</div>
+      <a class="product-url" href="https://www.eyeson.com/command-control" target="_blank">eyeson.com/command-control</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-video">Video · C2 · Multi-feed</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Server-side video composition</span>
+        <span class="fact-tag">Single stream output</span>
+        <span class="fact-tag">Layout presets</span>
+        <span class="fact-tag">Bandwidth-aware streaming</span>
+        <span class="fact-tag">Telemetry overlay</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">1 stream</div><div class="stat-label">All sources composited</div></div>
+    <div class="stat-cell"><div class="stat-val">Presets</div><div class="stat-label">Mode-tied layout switching</div></div>
+    <div class="stat-cell"><div class="stat-val">Quality badge</div><div class="stat-label">Per-feed stream status</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★</div><div class="stat-label">Design quality</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">One View composited layout</div>
+        <div class="img-slot" id="slot-e1" onclick="pickImage('slot-e1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">eyeson.com/command-control</div>
+        <div class="slot-hint">Composited multi-feed · telemetry overlay · layout presets</div>
+      </div>
+        <div class="screenshot-caption">All video sources composited server-side · telemetry overlaid · layout presets</div>
+      </div>
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Layout mode switcher</div>
+        <div class="img-slot" id="slot-e2" onclick="pickImage('slot-e2')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">eyeson.com/layout-design</div>
+        <div class="slot-hint">Programmable layout preset switcher</div>
+      </div>
+        <div class="screenshot-caption">Programmable layout presets — layout changes automatically with mode</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">Video communication platform adapted for C2 use cases. Key innovation: all video sources are merged server-side into a single composited stream rather than showing multiple windows on the client. Eliminates window management entirely and delivers bandwidth-aware quality degradation with visible indicators.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>Server-side video composition — all sources merged into one stream, no client window management</li>
+          <li>Layout presets tied to operational modes — layout switches automatically</li>
+          <li>Bandwidth-aware streaming with explicit quality badge per feed</li>
+          <li>Telemetry composited as overlay on camera feed — reduces eye travel</li>
+          <li>Single stream = works on any device, any bandwidth</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">Server-side composition</span>
+          <span class="arch-tag">Single output stream</span>
+          <span class="arch-tag">Layout preset engine</span>
+          <span class="arch-tag">Quality-adaptive streaming</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">Video layout model</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Layout preset concept</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Quality indicator design</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Direct competitor</span><div class="bar-track"><div class="bar-fill" style="width:30%;background:var(--blue)"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Composited "one view"</strong> — all video sources merged server-side into a single stream. Eliminates window management chaos entirely.</div></div>
+        <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Layout presets, not free-form windows</strong> — defined layouts rather than operators managing windows under stress.</div></div>
+        <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Bandwidth-aware streaming</strong> — visible quality badge per feed. System degrades gracefully; operator always knows what they're seeing.</div></div>
+        <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Telemetry as video overlay</strong> — bearing, speed, classification composited over the camera feed. Reduces eye travel between panels.</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">3 locked layout presets tied to operational phases. Mode switch → layout updates automatically. No manual rearrangement.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Stream quality badge on every video pane: 🟢 HD / 🟡 SD / 🔴 Degraded / ⬛ Lost. Never silent failure.</div></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ─── P05 DEDRONE ─── -->
+<div class="product-card" id="p-dedrone">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P05</div>
+      <div class="product-type">AI-Driven Airspace Security — Counter-UAS C2 Platform</div>
+      <div class="product-name">Dedrone (by Axon) — DedroneTracker.AI</div>
+      <a class="product-url" href="https://www.dedrone.com/products/drone-detection-software" target="_blank">dedrone.com/products/drone-detection-software</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-cuas">C-UAS · C2</span>
+        <span class="product-tag tag-ai">AI/ML · Behavior analysis</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Founded 2014 · Germany</span>
+        <span class="fact-tag">Acquired by Axon 2024</span>
+        <span class="fact-tag">955+ protected sites</span>
+        <span class="fact-tag">33 countries · 6 G7 govts</span>
+        <span class="fact-tag">53 airports</span>
+        <span class="fact-tag">18M+ training images</span>
+        <span class="fact-tag">~300 drone model database</span>
+        <span class="fact-tag">Open Systems Architecture</span>
+        <span class="fact-tag">Air-gapped + cloud</span>
+        <span class="fact-tag">★★★★ design</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">955+</div><div class="stat-label">Protected sites worldwide</div></div>
+    <div class="stat-cell"><div class="stat-val">18M+</div><div class="stat-label">AI training images</div></div>
+    <div class="stat-cell"><div class="stat-val">~300</div><div class="stat-label">Drone model database</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★★</div><div class="stat-label">Design quality</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      <div class="screenshot-block">
+        <div class="screenshot-label">Main dashboard — map + tracks</div>
+        <div class="img-slot" id="slot-dd1" onclick="pickImage('slot-dd1')">
+          <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+          <div class="slot-url">dedrone.com/products/drone-detection-software</div>
+          <div class="slot-hint">Single pane of glass · map · drone + pilot tracks · risk score</div>
+        </div>
+        <div class="screenshot-caption">Single pane of glass · fused sensor map · drone + pilot location · risk-prioritized queue</div>
+      </div>
+      <div class="screenshot-block">
+        <div class="screenshot-label">Risk Intelligence + Defeat Manager</div>
+        <div class="img-slot" id="slot-dd2" onclick="pickImage('slot-dd2')">
+          <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+          <div class="slot-url">dedrone.com/blog/the-release-of-dedronetracker-ai-6-0</div>
+          <div class="slot-hint">Risk score heatmap · behavior analysis · defeat controls</div>
+        </div>
+        <div class="screenshot-caption">Risk Intelligence scores targets by flight behavior · Defeat Manager engages jammers directly from UI</div>
+      </div>
+    </div>
+    <div class="product-columns">
+      <div class="product-core">
+        <div class="core-section">
+          <div class="core-label">What it does</div>
+          <p class="core-desc">The most widely deployed drone detection software globally. Uniquely goes beyond signature-matching to analyze drone behavior — loitering patterns, proximity to zones of interest, flight intent. The Risk Intelligence engine scores each target so one operator can monitor a wide area without alarm fatigue. Defeat Manager allows jammer control directly from the same interface, closing the full detect-to-defeat loop in one UI.</p>
+        </div>
+        <div class="core-section">
+          <div class="core-label">Key capabilities</div>
+          <ul class="cap-list">
+            <li>Risk Intelligence — scores targets based on flight patterns around zones of interest, not just presence</li>
+            <li>Behavior model filters + neural networks — virtually eliminates false positives</li>
+            <li>~300 drone model database for exact make/model identification</li>
+            <li>Defeat Manager — engages integrated jammers directly from the UI without context switch</li>
+            <li>Auto PTZ assignment — prioritizes cameras to highest-risk verified tracks</li>
+            <li>Friend / Foe / Verified target classification with manual override</li>
+            <li>Alert consolidation into Groups and Events — reduces noise</li>
+            <li>Remote ID standard support (US, EU, Japan)</li>
+            <li>OSGi plug-in framework — standardized sensor and effector integrations</li>
+            <li>DedroneOTM — vehicle-mounted mobile variant for on-the-move ops</li>
+            <li>City-Wide Drone Detection — zero-install cloud option for large areas</li>
+          </ul>
+        </div>
+        <div class="core-section">
+          <div class="core-label">Architecture</div>
+          <div class="arch-tags">
+            <span class="arch-tag">Browser-based</span>
+            <span class="arch-tag">Open Systems Architecture</span>
+            <span class="arch-tag">AI/ML behavior engine</span>
+            <span class="arch-tag">Sensor fusion</span>
+            <span class="arch-tag">OSGi plugin framework</span>
+            <span class="arch-tag">Air-gapped + cloud</span>
+            <span class="arch-tag">REST API</span>
+          </div>
+        </div>
+        <div class="core-section">
+          <div class="core-label">Relevance to our project</div>
+          <div class="rel-wrap">
+            <div class="rel-row"><span class="rel-label">Architecture match</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--blue)"></div></div></div>
+            <div class="rel-row"><span class="rel-label">Feature overlap</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--blue)"></div></div></div>
+            <div class="rel-row"><span class="rel-label">Risk scoring model</span><div class="bar-track"><div class="bar-fill" style="width:96%;background:var(--blue)"></div></div></div>
+            <div class="rel-row"><span class="rel-label">UI reference value</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:var(--blue)"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="product-learnings">
+        <div class="learning-group">
+          <div class="learning-title">Key UX/UI patterns</div>
+          <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Behavior-based risk scoring</strong> — "loitering over runway threshold, risk: HIGH" is far more actionable than "drone detected at lat/lon." The score is calculated from intent signals, not just presence.</div></div>
+          <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Single queue, risk-prioritized</strong> — operator sees one ordered list of threats ranked by Risk Intelligence score. They work top-to-bottom, never triage a raw alert flood.</div></div>
+          <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Defeat Manager in-UI</strong> — jammer controls appear in the same interface without switching apps or screens. The loop closes where the operator is already looking.</div></div>
+          <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Auto PTZ priority queue</strong> — cameras are assigned to targets automatically in order of Risk Score. Operator sees what matters first; camera resources are never wasted on low-risk tracks.</div></div>
+          <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Alert consolidation</strong> — multiple detections of the same drone auto-group into one Event. Prevents the same threat flooding the alert list as separate entries from different sensors.</div></div>
+        </div>
+        <div class="learning-group">
+          <div class="learning-title">Apply to our system</div>
+          <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Build threat scoring from day one — not just "drone detected" but a Risk Score based on proximity to protected zones, flight pattern (loitering vs. transiting), speed, and sensor confidence.</div></div>
+          <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Present targets as a single risk-ordered queue, not a flat event log. The operator's first action should always be on the highest-priority item.</div></div>
+          <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Interceptor dispatch controls should be inline with the target — not a separate panel the operator has to navigate to after identifying the threat.</div></div>
+        </div>
+        <div class="insight-box">
+          <div class="i-label">Key lesson for our system</div>
+          Dedrone's biggest insight is that detection without context is noise. Their Risk Intelligence feature — scoring by flight behavior, not just position — is the right model for our sensor fusion output. An alert that says <strong>"loitering 180m from runway threshold, Risk: 94"</strong> is immediately actionable. An alert that says "drone at 51.4°N 0.2°W" is not. Design our threat scoring layer around intent signals from day one.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════ CAT B ══════ -->
+<div class="cat-header" id="cat-gcs">
+  <span class="cat-label">Category B</span><div class="cat-line"></div>
+  <span class="cat-label">GCS / Drone Control — Design References</span><div class="cat-line"></div>
+</div>
+
+<!-- ─── P05 AUTERION ─── -->
+<div class="product-card" id="p-auterion">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P06</div>
+      <div class="product-type">Enterprise Drone Ground Control Station — Qt/QML · PX4 · MAVLink</div>
+      <div class="product-name">Auterion — Mission Control (AMC)</div>
+      <a class="product-url" href="https://auterion.com/product/mission-control/" target="_blank">auterion.com/product/mission-control</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-gcs">GCS · Autonomous · Fleet</span>
+        <span class="product-tag tag-drone">Qt/QML stack</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Same Qt/QML stack as us</span>
+        <span class="fact-tag">DIU selected</span>
+        <span class="fact-tag">DoD + US Army</span>
+        <span class="fact-tag">Open source PX4 core</span>
+        <span class="fact-tag">Full TAK integration</span>
+        <span class="fact-tag">Ukraine operational use</span>
+        <span class="fact-tag">★★★★★ design</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">Qt/QML</div><div class="stat-label">Same stack as our system</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★★★</div><div class="stat-label">Design quality</div></div>
+    <div class="stat-cell"><div class="stat-val">TAK</div><div class="stat-label">Full military integration</div></div>
+    <div class="stat-cell"><div class="stat-val">DoD</div><div class="stat-label">DIU selected · US Army</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Mission planning view</div>
+        <div class="img-slot" id="slot-a1" onclick="pickImage('slot-a1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">auterion.com/product/mission-control</div>
+        <div class="slot-hint">Satellite map · tap-to-waypoint · pre-flight checklist</div>
+      </div>
+        <div class="screenshot-caption">Satellite map as primary input · waypoints set by tap · video always co-located</div>
+      </div>
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Live view + camera</div>
+        <div class="img-slot" id="slot-a2" onclick="pickImage('slot-a2')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">auterion.com/product/mission-control — "Live view"</div>
+        <div class="slot-hint">Live feed + camera controls + go/no-go checklist</div>
+      </div>
+        <div class="screenshot-caption">Live feed · camera controls · automatic pre-launch go/no-go checklist</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">Enterprise drone ground control station and fleet management OS, built on open-source PX4. The design gold standard in drone software — clean dark theme, touch-first, minimal chrome, identical UX across desktop and tablet. Critically, uses the same Qt/QML technology stack as our proposed system.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>Autonomous path planning, terrain checking, waypoint missions</li>
+          <li>Live video streaming + EO/IR payload control in-app</li>
+          <li>Target following with auto-trajectory adjustment</li>
+          <li>Handoff between ground control stations</li>
+          <li>Full TAK (Team Awareness Kit) integration</li>
+          <li>Pre-flight safety checklists + geofencing — auto go/no-go gate</li>
+          <li>Identical UX across tablet and desktop — critical for our dual-client goal</li>
+          <li>Hardware-agnostic — same UI works across drones from different manufacturers</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">Qt/QML</span>
+          <span class="arch-tag">Linux-based OS</span>
+          <span class="arch-tag">MAVLink protocol</span>
+          <span class="arch-tag">Open source PX4</span>
+          <span class="arch-tag">Cross-platform</span>
+          <span class="arch-tag">Cloud fleet sync</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">UX design benchmark</span><div class="bar-track"><div class="bar-fill" style="width:98%;background:var(--green)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Tech stack match</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--green)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Tablet UI patterns</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--green)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Drone control model</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--green)"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-orange"></div><div class="learning-text"><strong>Map as primary input device</strong> — all tasking initiated by map tap. No coordinate text forms in primary workflows.</div></div>
+        <div class="learning-item"><div class="bullet b-orange"></div><div class="learning-text"><strong>Automated pre-flight checklist</strong> — GPS, battery, geofence, terrain collision all auto-checked. Visual go/no-go. Launch blocked until all pass.</div></div>
+        <div class="learning-item"><div class="bullet b-orange"></div><div class="learning-text"><strong>Video always co-located with map</strong> — live feed embedded in the same view. Never a separate screen.</div></div>
+        <div class="learning-item"><div class="bullet b-orange"></div><div class="learning-text"><strong>Standardised cross-device experience</strong> — identical UX on desktop, tablet, and field devices. Reduces training burden.</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Before interceptor launch: auto-checklist (GPS lock ✓, battery ≥ 30% ✓, target confidence ≥ threshold ✓). Force-override requires explicit confirmation.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Map tap = primary input for target selection, camera tasking, and drone routing. No coordinate text fields in main workflow.</div></div>
+      </div>
+      <div class="insight-box">
+        <div class="i-label">Stack alignment lesson</div>
+        Auterion uses <strong>Qt/QML</strong> — identical to our proposed stack. This makes AMC our most directly applicable UI reference. Every interaction pattern, touch target size, and component structure they've built applies without translation overhead. Study their codebase as a structural reference, not just for screenshots.
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ─── P06 XTEND XOS ─── -->
+<div class="product-card" id="p-xtend">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P07</div>
+      <div class="product-type">Tactical Multi-Drone Mission OS</div>
+      <div class="product-name">XTEND — XOS Mission Operating System</div>
+      <a class="product-url" href="https://www.xtend.me/xos" target="_blank">xtend.me/xos</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-drone">Multi-drone · Swarm</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Mission-intent abstraction</span>
+        <span class="fact-tag">HUD aesthetic</span>
+        <span class="fact-tag">Persistent fleet strip</span>
+        <span class="fact-tag">Game-engine visual language</span>
+        <span class="fact-tag">Israeli defense startup</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">Mission intent</div><div class="stat-label">Not platform commands</div></div>
+    <div class="stat-cell"><div class="stat-val">HUD aesthetic</div><div class="stat-label">Game-engine visual language</div></div>
+    <div class="stat-cell"><div class="stat-val">Fleet strip</div><div class="stat-label">Persistent device status</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★★</div><div class="stat-label">Design quality</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Operator interface</div>
+        <div class="img-slot" id="slot-x1" onclick="pickImage('slot-x1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">xtend.me/xos</div>
+        <div class="slot-hint">HUD-style operator view · platform tiles · mission map</div>
+      </div>
+        <div class="screenshot-caption">Game-engine HUD aesthetic · platform status tiles · mission-level command abstraction</div>
+      </div>
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Multi-drone swarm view</div>
+        <div class="img-slot" id="slot-x2" onclick="pickImage('slot-x2')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">xtend.me/xos — swarm section</div>
+        <div class="slot-hint">Multi-drone swarm coordination</div>
+      </div>
+        <div class="screenshot-caption">Multi-drone swarm coordination from single operator console</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">Tactical multi-drone mission OS from Israeli defense startup XTEND. Key innovation: operators issue mission intent ("intercept target") and the system resolves which drone, which route, which action. No manual platform-level commands. HUD-style interface with game-engine visual language and persistent fleet status strip.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>Mission intent abstraction — "intercept target" resolved to platform commands automatically</li>
+          <li>Persistent fleet status strip — battery, signal, mode for every active device</li>
+          <li>Game-engine HUD visual language — fast learning curve for new operators</li>
+          <li>One-tap platform switching without losing awareness of others</li>
+          <li>Multi-drone swarm coordination from single operator console</li>
+          <li>Context menus on tap — relevant actions surface where the operator is looking</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">Mission OS</span>
+          <span class="arch-tag">Intent resolution engine</span>
+          <span class="arch-tag">Multi-drone coordinator</span>
+          <span class="arch-tag">HUD-style UI</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">Mission abstraction model</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Fleet status strip</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">UI aesthetic reference</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Architecture match</span><div class="bar-track"><div class="bar-fill" style="width:65%;background:var(--blue)"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-purple"></div><div class="learning-text"><strong>Mission vs. platform abstraction</strong> — operator issues mission intent ("intercept target"); system resolves to platform commands. No manual coordinate entry.</div></div>
+        <div class="learning-item"><div class="bullet b-purple"></div><div class="learning-text"><strong>Persistent fleet status strip</strong> — every active drone/camera/sensor shows battery, signal, mode in a compact always-visible strip.</div></div>
+        <div class="learning-item"><div class="bullet b-purple"></div><div class="learning-text"><strong>Game-engine visual language</strong> — HUD overlays, icon-based platform indicators, context menus on tap. Fast learning curve.</div></div>
+        <div class="learning-item"><div class="bullet b-purple"></div><div class="learning-text"><strong>Rapid platform switching</strong> — one tap to switch from drone A to drone B without losing awareness of both.</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Interceptor dispatch = mission command: "Intercept Target #2" → system assigns nearest available drone automatically.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Persistent device strip at screen bottom: one tile per drone/camera. Tile turns red on fault or low battery.</div></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ─── P07 WALARIS ─── -->
+<div class="product-card" id="p-walaris">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P08</div>
+      <div class="product-type">AI-powered EO/IR Slew-to-Cue — Camera Intelligence Layer</div>
+      <div class="product-name">Walaris — AirScout Verify</div>
+      <a class="product-url" href="https://walaris.com/airscout-verify/" target="_blank">walaris.com/airscout-verify</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-ai">AI · EO/IR · Auto-track</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Auto-track by default</span>
+        <span class="fact-tag">AI classification confidence</span>
+        <span class="fact-tag">Multi-target priority queue</span>
+        <span class="fact-tag">False-positive suppression</span>
+        <span class="fact-tag">Operator-on-the-loop model</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">Auto-track</div><div class="stat-label">Default PTZ behavior</div></div>
+    <div class="stat-cell"><div class="stat-val">Confidence %</div><div class="stat-label">Per-target AI rating</div></div>
+    <div class="stat-cell"><div class="stat-val">Priority queue</div><div class="stat-label">Multi-target ranking</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★★</div><div class="stat-label">Design quality</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Camera tracking view</div>
+        <div class="img-slot" id="slot-w1" onclick="pickImage('slot-w1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">walaris.com/airscout-verify</div>
+        <div class="slot-hint">Camera feed with AI bounding box · classification · confidence %</div>
+      </div>
+        <div class="screenshot-caption">Camera feed · AI bounding box · classification label · confidence % · track ID</div>
+      </div>
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Map + target track</div>
+        <div class="img-slot" id="slot-w2" onclick="pickImage('slot-w2')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">walaris.com/airscout-verify — gallery</div>
+        <div class="slot-hint">Map view with target track + sensor positions</div>
+      </div>
+        <div class="screenshot-caption">Map view with target track + sensor positions</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">AI-powered EO/IR camera intelligence layer that implements full operator-on-the-loop model for PTZ camera control. Camera auto-acquires and tracks by default. The operator receives a prioritized queue of AI-verified threats — not a raw stream of detections. Only alerts above the confidence threshold reach the operator.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>Default auto-track — camera acquires and maintains track without operator input</li>
+          <li>AI classification (drone / bird / aircraft / vehicle) + confidence % per target</li>
+          <li>Priority queue for multiple targets — system ranks threats; operator can reorder</li>
+          <li>False-positive suppression — only AI-verified alerts reach the operator</li>
+          <li>Bounding box overlay on camera feed with track ID and classification badge</li>
+          <li>Manual override always available — "Take manual control" overlaid on feed</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">EO/IR camera AI</span>
+          <span class="arch-tag">Real-time classification</span>
+          <span class="arch-tag">Alert priority engine</span>
+          <span class="arch-tag">Auto-track default</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">PTZ control model</span><div class="bar-track"><div class="bar-fill" style="width:96%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Confidence display UI</span><div class="bar-track"><div class="bar-fill" style="width:94%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Alert design model</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--blue)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Architecture match</span><div class="bar-track"><div class="bar-fill" style="width:75%;background:var(--blue)"></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Operator-on-the-loop</strong> — camera auto-acquires and tracks by default. Operator overrides — does not approve every sub-step.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Classification confidence always visible</strong> — AI label (drone / bird / aircraft) + confidence %. Only high-confidence alerts escalate.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>Priority queue for multiple targets</strong> — system ranks threats; operator can reorder. No assumption the operator spots all targets manually.</div></div>
+        <div class="learning-item"><div class="bullet b-blue"></div><div class="learning-text"><strong>False-positive suppression</strong> — only alerts that cleared the AI threshold reach the operator. Dramatically reduces alarm fatigue.</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Default PTZ = auto-track. Prominent "Take manual control" button overlaid on camera feed. Returns to auto-track after 30s idle.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Classification badge on each target: Confirmed / Probable / Unverified. Only "Confirmed" unlocks intercept without extra confirmation step.</div></div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ══════ CAT C ══════ -->
+<div class="cat-header" id="cat-sensor">
+  <span class="cat-label">Category C</span><div class="cat-line"></div>
+  <span class="cat-label">Sensor Systems — Integration Architecture &amp; SDR References</span><div class="cat-line"></div>
+</div>
+
+<!-- ─── P08 SENTRYCS ─── -->
+<div class="product-card" id="p-sentrycs">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P09</div>
+      <div class="product-type">Cyber-over-RF C-UAS — Protocol Manipulation (now Ondas Holdings)</div>
+      <div class="product-name">Sentrycs — CoRF Counter-UAS Platform</div>
+      <a class="product-url" href="https://sentrycs.com" target="_blank">sentrycs.com</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-rf">SDR · Cyber-RF</span>
+        <span class="product-tag tag-cuas">Airport · Military</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Acquired by Ondas Holdings 2025</span>
+        <span class="fact-tag">25 countries</span>
+        <span class="fact-tag">Combat-proven</span>
+        <span class="fact-tag">Integrated: Rafael Drone Dome</span>
+        <span class="fact-tag">Integrated: Leonardo Falcon Shield</span>
+        <span class="fact-tag">5-minute setup</span>
+        <span class="fact-tag">Zero jamming</span>
+        <span class="fact-tag">6 continents</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">10km</div><div class="stat-label">Coverage from 1 sensor</div></div>
+    <div class="stat-cell"><div class="stat-val">5 min</div><div class="stat-label">Full setup time</div></div>
+    <div class="stat-cell"><div class="stat-val">0</div><div class="stat-label">Jamming / RF interference</div></div>
+    <div class="stat-cell"><div class="stat-val">25 countries</div><div class="stat-label">Combat-proven deployments</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">C2 interface</div>
+        <div class="img-slot" id="slot-sc1" onclick="pickImage('slot-sc1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">sentrycs.com</div>
+        <div class="slot-hint">Operator dashboard · map · drone + operator position · takeover controls</div>
+      </div>
+        <div class="screenshot-caption">Operator map view · detected drone position + operator location · protocol-level data</div>
+      </div>
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Horizon Engine detection</div>
+        <div class="img-slot" id="slot-sc2" onclick="pickImage('slot-sc2')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">Search: "Sentrycs Horizon Engine interface 2025"</div>
+        <div class="slot-hint">AI signal analysis · unknown protocol detection</div>
+      </div>
+        <div class="screenshot-caption">Horizon Engine — AI signal analysis, learns unknown protocols without a pre-built library</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">Operates at the communication-protocol layer — reads actual bit-level signals between a drone and its controller. Identifies the drone down to serial number, locates the operator, and executes a cyber takeover within seconds, safely landing the drone at a pre-set location. No radar required, no jamming, no RF interference — critical for airport environments where jamming is illegal.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>Protocol Manipulation (Cyber-over-RF) — full drone takeover, safe forced landing</li>
+          <li>Passive detection — extracts drone type, serial number, operator location from RF signals</li>
+          <li>Horizon Engine — AI that learns new/unknown drone protocols in real time, no signal library needed</li>
+          <li>360° coverage from a single sensor, up to 10km diameter</li>
+          <li>OcuSync 4.0 support — DJI Air 3, Mini 4 Pro, Matrice 4 (v6.0)</li>
+          <li>Software-defined on standard Intel hardware + Docker containers</li>
+          <li>Open C2 — integrates with third-party sensors, radars, and effectors</li>
+          <li>Integrated into Rafael Drone Dome and Leonardo Falcon Shield</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">Software-defined RF</span>
+          <span class="arch-tag">Intel x86 hardware</span>
+          <span class="arch-tag">Docker containers</span>
+          <span class="arch-tag">Passive detection</span>
+          <span class="arch-tag">Open C2 API</span>
+          <span class="arch-tag">No GPS dependency</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">SDR sensor integration</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--teal)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Operator ID from RF</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--teal)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Airport use case</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--teal)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">C2 architecture model</span><div class="bar-track"><div class="bar-fill" style="width:70%;background:var(--teal)"></div></div></div>
+        </div>
+      </div>
+      <div class="distinction-box">
+        <div class="d-label">Important distinction</div>
+        Sentrycs replaces the interceptor drone entirely with cyber takeover — no physical interceptor needed. Our system uses both an SDR layer (detection) AND a physical drone interceptor (response), which is more capable but requires tighter software coordination between these two response modes in our backend.
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-teal"></div><div class="learning-text"><strong>Operator location displayed</strong> — RF protocol analysis surfaces the pilot's position on map alongside the drone. Unique data point that enriches our target object.</div></div>
+        <div class="learning-item"><div class="bullet b-teal"></div><div class="learning-text"><strong>Actionable serial number</strong> — drone identified to SN level in the UI. Target object shows: model, serial, operator position, protocol type.</div></div>
+        <div class="learning-item"><div class="bullet b-teal"></div><div class="learning-text"><strong>C2 interface redesigned in v6.0</strong> based on operator field feedback — fast, intuitive response flows for takeover actions.</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our SDR sensor adapter should follow Sentrycs' model: extract drone type, operator position, serial number from RF signals — not just "drone detected at location."</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our sensor plugin architecture should support protocol discovery, not just known-signature matching. Future-proofs against new drone models.</div></div>
+      </div>
+      <div class="insight-box">
+        <div class="i-label">Our SDR integration lesson</div>
+        Sentrycs' Docker-on-Intel deployment model validates our own flexible deployment architecture. Their approach — software-defined, hardware-agnostic, containerized — maps directly to how our sensor adapters should be packaged. <strong>Their data quality is the contract our SDR adapter must meet:</strong> position, operator location, serial number, confidence — not just coordinates.
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ─── P09 IRIS AUTOMATION ─── -->
+<div class="product-card" id="p-iris">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P10</div>
+      <div class="product-type">Computer Vision Detect-and-Avoid — BVLOS Safety</div>
+      <div class="product-name">Iris Automation — Casia (X + G)</div>
+      <a class="product-url" href="https://www.irisonboard.com/casia" target="_blank">irisonboard.com/casia</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-daa">DAA · CV · BVLOS</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Acquired by uAvionix</span>
+        <span class="fact-tag">16,000 flight tests</span>
+        <span class="fact-tag">FAA BEYOND program</span>
+        <span class="fact-tag">95.4% detection rate</span>
+        <span class="fact-tag">Visual encounter replay tooling</span>
+        <span class="fact-tag">Mesh node network</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">360°</div><div class="stat-label">Casia X detection radius</div></div>
+    <div class="stat-cell"><div class="stat-val">16,000+</div><div class="stat-label">Real flight test encounters</div></div>
+    <div class="stat-cell"><div class="stat-val">1.2 km</div><div class="stat-label">Avg aircraft detection range</div></div>
+    <div class="stat-cell"><div class="stat-val">Replay tooling</div><div class="stat-label">Visual encounter investigation</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Casia G airspace display</div>
+        <div class="img-slot" id="slot-ir1" onclick="pickImage('slot-ir1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">irisonboard.com/casia</div>
+        <div class="slot-hint">Ground-based node · airspace visualization · detection alerts</div>
+      </div>
+        <div class="screenshot-caption">Ground-based node airspace display · detection alert · Kongsberg Geospatial integration</div>
+      </div>
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Encounter replay</div>
+        <div class="img-slot" id="slot-ir2" onclick="pickImage('slot-ir2')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">Search: "Iris Automation Casia encounter replay"</div>
+        <div class="slot-hint">Visual replay tooling and log files</div>
+      </div>
+        <div class="screenshot-caption">Visual aircraft encounter replay tooling — timestamped, correlated track + detection log</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">Computer vision detect-and-avoid system for BVLOS drone operations. Casia X is onboard (up to 6 cameras, 360°). Casia G is ground-based, creating a sanitized airspace bubble around a drone operation via mesh nodes. Relevance to our project is primarily the replay tooling and sensor mesh architecture — not the counter-UAS application itself.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>Casia X — onboard 1–6 camera, 360° aircraft detection at ~1.2km range</li>
+          <li>Casia G — ground-based mesh nodes, 1-mile detection range, 95.4% detection rate</li>
+          <li>Visual aircraft encounter replay tooling and log files — investigation workflow</li>
+          <li>Mesh network of Casia G nodes → single correlated airspace picture</li>
+          <li>Open software API — integrates with Kongsberg Geospatial, TruWeather, Whitefox</li>
+          <li>12× reduction in false detections vs. previous generation</li>
+          <li>Millisecond reaction time vs. 12.5 seconds for human pilot</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">Computer vision AI</span>
+          <span class="arch-tag">Edge processing</span>
+          <span class="arch-tag">Mesh node network</span>
+          <span class="arch-tag">UTM integration</span>
+          <span class="arch-tag">Open API</span>
+          <span class="arch-tag">MAVLink compatible</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">Replay / black box design</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--teal)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Sensor mesh architecture</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--teal)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Detection → C2 pipeline</span><div class="bar-track"><div class="bar-fill" style="width:72%;background:var(--teal)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Direct C-UAS competitor</span><div class="bar-track"><div class="bar-fill" style="width:10%;background:var(--teal)"></div></div></div>
+        </div>
+      </div>
+      <div class="distinction-box">
+        <div class="d-label">Important distinction</div>
+        Casia detects manned aircraft approaching drones (a safety tool for drone operators). Our system detects hostile drones approaching a protected zone. Same CV and sensor mesh architecture — exactly opposite operational context and response logic.
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-teal"></div><div class="learning-text"><strong>Visual encounter replay</strong> — timestamped detection events, correlated track history, playable investigation timeline. The closest reference for our "black box" replay feature.</div></div>
+        <div class="learning-item"><div class="bullet b-teal"></div><div class="learning-text"><strong>Mesh node → single picture</strong> — multiple Casia G nodes output one correlated airspace view. Same architecture as our multi-sensor fusion.</div></div>
+        <div class="learning-item"><div class="bullet b-teal"></div><div class="learning-text"><strong>12× false detection reduction</strong> — extensive test cycle before launch. A reminder that sensor accuracy work must precede UI complexity.</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our replay feature should present incident data as an investigation tool: timestamped event timeline, correlated sensor inputs, playable track history — not just video playback.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our sensor mesh model (multiple radar/RF nodes → single fused picture) maps directly to Casia G's architecture pattern.</div></div>
+      </div>
+      <div class="insight-box">
+        <div class="i-label">Our replay feature lesson</div>
+        Casia's encounter replay tooling is a direct reference for our "black box" replay requirement. The key insight: present replay as an <strong>investigation workflow</strong>, not playback. Timestamped event markers, sensor confidence at each moment, operator action log, scrubable timeline. Design this from day one — it affects our data model and storage architecture.
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ─── P10 AARONIA ─── -->
+<div class="product-card" id="p-aaronia">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P11</div>
+      <div class="product-type">RF Spectrum Analysis · C-UAS — RTSA-Suite PRO + AARTOS DDS</div>
+      <div class="product-name">Aaronia — AARTOS Drone Detection System</div>
+      <a class="product-url" href="https://aaronia.com/en/products/software" target="_blank">aaronia.com/products/software</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-rf">RF · SDR · EW</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">German RF specialist</span>
+        <span class="fact-tag">Founded 1999</span>
+        <span class="fact-tag">400MHz–6GHz simultaneous</span>
+        <span class="fact-tag">1° direction finding accuracy</span>
+        <span class="fact-tag">Altitude detection unique</span>
+        <span class="fact-tag">EW capable</span>
+        <span class="fact-tag">4 tiers: X2→X9</span>
+        <span class="fact-tag">30-second deploy</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">400MHz–6GHz</div><div class="stat-label">Full simultaneous spectrum</div></div>
+    <div class="stat-cell"><div class="stat-val">1°</div><div class="stat-label">Direction finding accuracy</div></div>
+    <div class="stat-cell"><div class="stat-val">30 sec</div><div class="stat-label">X2 operational readiness</div></div>
+    <div class="stat-cell"><div class="stat-val">X2→X9</div><div class="stat-label">4 deployment tiers</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">RTSA-Suite PRO spectrum display</div>
+        <div class="img-slot" id="slot-aa1" onclick="pickImage('slot-aa1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">aaronia.com/products/software</div>
+        <div class="slot-hint">Spectrum waterfall · block-based hardware config · drone detection overlay</div>
+      </div>
+        <div class="screenshot-caption">Spectrum waterfall display · block-configured hardware · drone + operator position overlay</div>
+      </div>
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">AARTOS DDS map output</div>
+        <div class="img-slot" id="slot-aa2" onclick="pickImage('slot-aa2')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">Search: "Aaronia AARTOS DDS map operator view"</div>
+        <div class="slot-hint">Map view with drone + operator positions</div>
+      </div>
+        <div class="screenshot-caption">AARTOS map output — real-time drone position, operator position, heading, altitude</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">German RF instrumentation company whose SPECTRAN analyzers and RTSA-Suite PRO software form the basis of the AARTOS drone detection system. Unlike protocol-level systems (Sentrycs), AARTOS detects all RF-emitting drones by scanning the full electromagnetic spectrum simultaneously — including frequency-hopping drones. Critically outputs drone position, operator position, AND altitude — rare among RF competitors.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>Full-spectrum simultaneous scan: 400 MHz to 6 GHz including frequency hoppers</li>
+          <li>IsoLOG 3D DF antenna — 360° direction finding at 1° accuracy, no moving parts</li>
+          <li>Real-time drone AND operator position tracking + altitude determination</li>
+          <li>Block-based hardware config in RTSA-Suite PRO — standardized outputs per component</li>
+          <li>360° Smart Jammer — programmable, 10km range defeat</li>
+          <li>4 tiers: X2 (laptop/30-sec deploy), X5, X7, X9 (full military)</li>
+          <li>EW extension: detects radar pulses, public safety radios, remote-controlled IED signals</li>
+          <li>Camera + jammer control integrated into RTSA-Suite PRO UI</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">SPECTRAN hardware core</span>
+          <span class="arch-tag">RTSA-Suite PRO</span>
+          <span class="arch-tag">IsoLOG 3D antenna</span>
+          <span class="arch-tag">Windows-based</span>
+          <span class="arch-tag">Block-config UI</span>
+          <span class="arch-tag">Modular tiers</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">SDR adapter reference</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--amber)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Data output contract</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--amber)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">RF data → map output</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--amber)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">UI design reference</span><div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--amber)"></div></div></div>
+        </div>
+      </div>
+      <div class="distinction-box">
+        <div class="d-label">Important distinction</div>
+        RTSA-Suite PRO is an expert tool for RF engineers — dense spectrum waterfalls, technical configuration UI. Our system is the operator-facing layer that sits on top of this data. We consume Aaronia's excellent sensor outputs and present them cleanly — <strong>their data quality, our UX layer.</strong>
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Block-based hardware config</strong> — each hardware component is a configurable block with standardized outputs. The right model for our sensor plugin architecture.</div></div>
+        <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Full-spectrum detection output</strong> — position, altitude, speed, heading, operator position, protocol type. Sets the data richness standard for our SDR adapter contract.</div></div>
+        <div class="learning-item"><div class="bullet b-red"></div><div class="learning-text"><strong>RTSA-Suite PRO UI is not the reference</strong> — it's dense, technical, and designed for RF engineers. Provides the data model but not the UX model.</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our SDR sensor adapter data contract: position (lat/lon/alt), speed, heading, operator position, confidence %, drone type/serial — matching Aaronia's normalized output model.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our sensor plugin architecture: each sensor type is a standardized block that outputs a normalized detection event regardless of underlying hardware.</div></div>
+      </div>
+      <div class="insight-box">
+        <div class="i-label">Our SDR integration lesson</div>
+        AARTOS is the type of SDR system our sensor integration layer needs to support as an adapter. Their block-based config model directly informs how we should architect our sensor plugin system. Their data outputs (position + altitude + operator location) define the <strong>minimum data contract</strong> our sensor fusion expects from any RF/SDR adapter.
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ══════ CAT D ══════ -->
+<div class="cat-header" id="cat-infra">
+  <span class="cat-label">Category D</span><div class="cat-line"></div>
+  <span class="cat-label">Infrastructure — Network Transport &amp; Connectivity</span><div class="cat-line"></div>
+</div>
+
+<!-- ─── P11 SILVUS ─── -->
+<div class="product-card" id="p-silvus">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P12</div>
+      <div class="product-type">Tactical Mesh Radio Network — MANET/MIMO (Motorola Solutions)</div>
+      <div class="product-name">Silvus Technologies — StreamCaster + StreamScape</div>
+      <a class="product-url" href="https://silvustechnologies.com" target="_blank">silvustechnologies.com</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-net">Mesh Radio · MANET</span>
+        <span class="product-tag tag-drone">DoD certified</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Acquired by Motorola Solutions</span>
+        <span class="fact-tag">Blue UAS Framework certified</span>
+        <span class="fact-tag">550+ node mesh</span>
+        <span class="fact-tag">100 Mbps</span>
+        <span class="fact-tag">AES-256 + FIPS 140-3</span>
+        <span class="fact-tag">ATAK integration</span>
+        <span class="fact-tag">Browser UI — zero install</span>
+        <span class="fact-tag">Anti-jam EW resilience</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">550+ nodes</div><div class="stat-label">Per mesh network</div></div>
+    <div class="stat-cell"><div class="stat-val">100 Mbps</div><div class="stat-label">Tactical data throughput</div></div>
+    <div class="stat-cell"><div class="stat-val">AES-256</div><div class="stat-label">FIPS 140-3 encrypted</div></div>
+    <div class="stat-cell"><div class="stat-val">Any browser</div><div class="stat-label">StreamScape zero-install UI</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">StreamScape network management</div>
+        <div class="img-slot" id="slot-sv1" onclick="pickImage('slot-sv1')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">silvustechnologies.com — StreamScape</div>
+        <div class="slot-hint">Node topology map · signal strength · bandwidth utilization</div>
+      </div>
+        <div class="screenshot-caption">Node topology view · signal strength per link · bandwidth utilization · device status</div>
+      </div>
+      
+      <div class="screenshot-block">
+        <div class="screenshot-label">Tactical edge deployment</div>
+        <div class="img-slot" id="slot-sv2" onclick="pickImage('slot-sv2')">
+        <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+        <div class="slot-url">Search: "Silvus StreamCaster NEXUS tactical deployment"</div>
+        <div class="slot-hint">Field deployment · mesh coverage · drone link</div>
+      </div>
+        <div class="screenshot-caption">Field mesh deployment connecting drones, sensors, vehicles, and command center</div>
+      </div>
+    </div>
+  <div class="product-columns">
+    <div class="product-core">
+      <div class="core-section">
+        <div class="core-label">What it does</div>
+        <p class="core-desc">Tactical mesh radio network — the communications backbone, not the application. StreamCaster MANET radios create a self-forming mesh that carries video, sensor data, voice, and C2 commands between drones, sensors, and command centers without any fixed infrastructure. The answer to our "degraded connectivity" deployment scenario. StreamScape is their browser-accessible network management UI embedded in every radio.</p>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Key capabilities</div>
+        <ul class="cap-list">
+          <li>MN-MIMO waveform — self-forming, self-healing mesh, links 550+ nodes</li>
+          <li>StreamScape — embedded network management UI, any browser, any device, zero install</li>
+          <li>100 Mbps high-fidelity video streaming over tactical mesh</li>
+          <li>Spectrum Dominance 2.0 — LPI/LPD, anti-jam, EW resilience under electronic attack</li>
+          <li>ATAK integration — shares tracks with military TAK ecosystem via plug-in</li>
+          <li>IP68, MIL-STD-810G — ruggedized for extreme environments</li>
+          <li>Form factors: handheld, vehicle-mount, OEM module (52g), chest-mount (NEXUS)</li>
+          <li>Blue UAS Framework + AUVSI Green UAS certified for drone comms</li>
+        </ul>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Architecture</div>
+        <div class="arch-tags">
+          <span class="arch-tag">MANET radio hardware</span>
+          <span class="arch-tag">MN-MIMO waveform</span>
+          <span class="arch-tag">Browser-based UI</span>
+          <span class="arch-tag">ATAK integration</span>
+          <span class="arch-tag">IP/video transport</span>
+          <span class="arch-tag">Self-forming mesh</span>
+        </div>
+      </div>
+      <div class="core-section">
+        <div class="core-label">Relevance to our project</div>
+        <div class="rel-wrap">
+          <div class="rel-row"><span class="rel-label">Degraded connectivity</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--red)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Video transport layer</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--red)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">Drone comms link</span><div class="bar-track"><div class="bar-fill" style="width:85%;background:var(--red)"></div></div></div>
+          <div class="rel-row"><span class="rel-label">C2 software reference</span><div class="bar-track"><div class="bar-fill" style="width:20%;background:var(--red)"></div></div></div>
+        </div>
+      </div>
+      <div class="distinction-box">
+        <div class="d-label">Important distinction</div>
+        Silvus sits below our software stack as the network transport layer — not a competitor or UI reference. Our system runs on top of whatever IP network is available. The relevant lesson is architectural: design our backend to be transport-agnostic so Silvus mesh, LTE, or local ethernet are all transparent to the application layer.
+      </div>
+    </div>
+    <div class="product-learnings">
+      <div class="learning-group">
+        <div class="learning-title">Key UX/UI patterns</div>
+        <div class="learning-item"><div class="bullet b-red"></div><div class="learning-text"><strong>StreamScape zero-install browser UI</strong> — embedded in every radio, accessible from any computer, tablet, or smartphone. No installation needed anywhere. Strong reference for our own operator interface accessibility model.</div></div>
+        <div class="learning-item"><div class="bullet b-red"></div><div class="learning-text"><strong>Node topology visualization</strong> — shows signal strength per link, bandwidth utilization, device status. Reference for how we should display sensor network health.</div></div>
+        <div class="learning-item"><div class="bullet b-red"></div><div class="learning-text"><strong>Quality-aware streaming</strong> — mesh automatically adapts video quality based on available bandwidth. Consistent with our stream quality badge requirement.</div></div>
+      </div>
+      <div class="learning-group">
+        <div class="learning-title">Apply to our system</div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our "degraded connectivity" scenario is solved by Silvus at the hardware layer. Our backend should be transport-agnostic — working equally over LTE, Silvus mesh, or local ethernet.</div></div>
+        <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">StreamScape's zero-install model is the right target: our operator interface should be accessible from any device on the local network without installation.</div></div>
+      </div>
+      <div class="insight-box">
+        <div class="i-label">Our degraded connectivity lesson</div>
+        Silvus is the answer to our "degraded connectivity" deployment scenario. Key architectural principle: <strong>design our backend communication layer to be transport-agnostic</strong>. Any IP-capable link — internet, 4G/5G, Silvus MANET mesh, or local ethernet — must work transparently. Never hardcode assumptions about network quality, latency, or availability.
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+<!-- ══════ CAT E ══════ -->
+<div class="cat-header" id="cat-aspirational">
+  <span class="cat-label">Category E</span><div class="cat-line"></div>
+  <span class="cat-label">Design Aspirations — Gold Standard References</span><div class="cat-line"></div>
+</div>
+
+<!-- ─── P12 ANDURIL ─── -->
+<div class="product-card" id="p-anduril">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P12</div>
+      <div class="product-type">AI Military OS — Autonomous Sensor Fusion &amp; Command Platform</div>
+      <div class="product-name">Anduril Industries — Lattice OS</div>
+      <a class="product-url" href="https://www.anduril.com/lattice/" target="_blank">anduril.com/lattice</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-cuas">Military OS</span>
+        <span class="product-tag tag-ai">AI-native · Autonomous</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Founded by Palmer Luckey (Oculus)</span>
+        <span class="fact-tag">$60B valuation 2026</span>
+        <span class="fact-tag">Army IBCS-M selected</span>
+        <span class="fact-tag">CENTCOM · INDOPACOM</span>
+        <span class="fact-tag">Palantir consortium</span>
+        <span class="fact-tag">OpenAI partnership</span>
+        <span class="fact-tag">550+ node sensor mesh</span>
+        <span class="fact-tag">New sensor integrated in hours</span>
+        <span class="fact-tag">4/4 live-fire intercepts</span>
+        <span class="fact-tag">Lattice SDK — open ecosystem</span>
+        <span class="fact-tag">★★★★★ design</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">Hours</div><div class="stat-label">New sensor integration time</div></div>
+    <div class="stat-cell"><div class="stat-val">IBCS-M</div><div class="stat-label">US Army fire control platform</div></div>
+    <div class="stat-cell"><div class="stat-val">All domains</div><div class="stat-label">Air · Land · Sea · Space · Cyber</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★★★</div><div class="stat-label">Design quality</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      <div class="screenshot-block">
+        <div class="screenshot-label">Lattice 3D operational picture</div>
+        <div class="img-slot" id="slot-an1" onclick="pickImage('slot-an1')">
+          <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+          <div class="slot-url">Search: "Anduril Lattice CENTCOM Desert Guardian interface"</div>
+          <div class="slot-hint">Dark 3D map · sensor tracks · AI-curated alert queue · mission control</div>
+        </div>
+        <div class="screenshot-caption">Lattice 3D common operating picture — sensor-fused tracks · AI-prioritized threats · single operator view</div>
+      </div>
+      <div class="screenshot-block">
+        <div class="screenshot-label">IBCS-M fire control display</div>
+        <div class="img-slot" id="slot-an2" onclick="pickImage('slot-an2')">
+          <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+          <div class="slot-url">Search: "Anduril Lattice IBCS-M UI operator 2025"</div>
+          <div class="slot-hint">Multi-sensor fusion · threat queue · intercept assignment</div>
+        </div>
+        <div class="screenshot-caption">Army IBCS-M fire control — one operator managing multiple simultaneous C-UAS threats via Lattice</div>
+      </div>
+    </div>
+    <div class="product-columns">
+      <div class="product-core">
+        <div class="core-section">
+          <div class="core-label">What it does</div>
+          <p class="core-desc">Lattice is an AI operating system for warfare — the highest-level design aspiration for our system. It ingests data from thousands of sensors, drones, radars, satellites, and towers across all domains; fuses it into a real-time 3D common operating picture; and surfaces only relevant, prioritized alerts to operators. It doesn't display raw data — it curates it. The design philosophy that operators should manage missions, not monitors, is executed here at the highest level of maturity.</p>
+        </div>
+        <div class="core-section">
+          <div class="core-label">Key capabilities</div>
+          <ul class="cap-list">
+            <li>Real-time 3D common operating picture — thousands of simultaneous sensor feeds</li>
+            <li>Sensor-agnostic, network-agnostic, system-agnostic — any input, any protocol</li>
+            <li>AI/ML fusion: filters, fuses, classifies, and surfaces only relevant alerts</li>
+            <li>Lattice Mesh — pub/sub data sharing across all hardware partners</li>
+            <li>Lattice SDK — open ecosystem for third-party hardware and app developers</li>
+            <li>New sensor integration in hours — tested and validated at Yuma Proving Ground</li>
+            <li>Human-on-the-loop — AI automates routine; human decides lethal</li>
+            <li>Deployed: F-35, NASAMS, MQ-9, ABMS, Ghost-X drone, Sentry towers</li>
+            <li>Army IBCS-M: single operator managing multiple simultaneous C-UAS intercepts</li>
+            <li>Kill chain optimization — detection-to-defeat time measured in seconds</li>
+          </ul>
+        </div>
+        <div class="core-section">
+          <div class="core-label">Architecture</div>
+          <div class="arch-tags">
+            <span class="arch-tag">Edge computing</span>
+            <span class="arch-tag">Data mesh (pub/sub)</span>
+            <span class="arch-tag">AI-native</span>
+            <span class="arch-tag">gRPC + Protobuf</span>
+            <span class="arch-tag">REST SDK</span>
+            <span class="arch-tag">Open ecosystem</span>
+            <span class="arch-tag">All classification levels</span>
+          </div>
+        </div>
+        <div class="core-section">
+          <div class="core-label">Relevance to our project</div>
+          <div class="rel-wrap">
+            <div class="rel-row"><span class="rel-label">Design inspiration</span><div class="bar-track"><div class="bar-fill" style="width:99%;background:var(--purple)"></div></div></div>
+            <div class="rel-row"><span class="rel-label">Integration philosophy</span><div class="bar-track"><div class="bar-fill" style="width:95%;background:var(--purple)"></div></div></div>
+            <div class="rel-row"><span class="rel-label">Architecture inspiration</span><div class="bar-track"><div class="bar-fill" style="width:88%;background:var(--purple)"></div></div></div>
+            <div class="rel-row"><span class="rel-label">Direct reusability</span><div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--purple)"></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="product-learnings">
+        <div class="learning-group">
+          <div class="learning-title">Key UX/UI patterns</div>
+          <div class="learning-item"><div class="bullet b-purple"></div><div class="learning-text"><strong>Alert curation, not alert flooding</strong> — Lattice processes thousands of sensor inputs and surfaces only what the operator needs to act on. The UI is quiet until something requires a decision.</div></div>
+          <div class="learning-item"><div class="bullet b-purple"></div><div class="learning-text"><strong>3D spatial awareness</strong> — altitude and trajectory in a true 3D view, not a flat map. A drone approaching at 120m altitude behaves differently from one at 20m — the UI encodes this visually.</div></div>
+          <div class="learning-item"><div class="bullet b-purple"></div><div class="learning-text"><strong>Hours-level sensor integration</strong> — the integration timeline is a UX metric. Systems designed for fast onboarding expose a standardized data contract, not a custom integration per sensor.</div></div>
+          <div class="learning-item"><div class="bullet b-purple"></div><div class="learning-text"><strong>Game-engine visual language</strong> — dark, 3D, cinematic. Tracks rendered as trajectories, not dots. Threat severity encoded in color and animation intensity, not just labels.</div></div>
+          <div class="learning-item"><div class="bullet b-purple"></div><div class="learning-text"><strong>One operator, many assets</strong> — IBCS-M demo: one operator managing multiple simultaneous intercepts. The UI architecture makes this possible by removing all manual coordination burden.</div></div>
+        </div>
+        <div class="learning-group">
+          <div class="learning-title">Apply to our system</div>
+          <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our sensor integration layer should expose a clean data contract (position, confidence, classification, heading, altitude) — any sensor that meets the contract appears on the map in hours, not weeks.</div></div>
+          <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our alert engine should be a curator, not a relay. Raw sensor events are never shown to operators — only processed, scored, deduplicated threat objects make it to the UI.</div></div>
+          <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Encode altitude visually — a target at 15m vs 150m should look different on the map. Use vertical position, icon size, or opacity to communicate altitude without a separate readout.</div></div>
+        </div>
+        <div class="insight-box">
+          <div class="i-label">The design benchmark for our system</div>
+          Anduril's Lattice is what our system should aspire to become at scale. Not in scope — in <strong>philosophy</strong>. The core principle: AI handles sub-tasks, the operator handles decisions. The UI is a decision surface, not a data display. Every feature we build should be evaluated against this question: does this help the operator decide faster, or does it add to what they have to process?
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── P13 PALANTIR ─── -->
+<div class="product-card" id="p-palantir">
+  <div class="product-header">
+    <div class="product-meta">
+      <div class="product-num">P13</div>
+      <div class="product-type">Enterprise AI Data Fusion — Military Intelligence &amp; Targeting Platform</div>
+      <div class="product-name">Palantir — AIP for Defense / Maven Smart System</div>
+      <a class="product-url" href="https://www.palantir.com/platforms/aip/defense/" target="_blank">palantir.com/platforms/aip/defense</a>
+    </div>
+    <div class="header-right">
+      <div class="product-badges">
+        <span class="product-tag tag-ai">AI · LLM · Data fusion</span>
+        <span class="product-tag tag-cuas">Enterprise · Command</span>
+      </div>
+      <div class="fact-tags">
+        <span class="fact-tag">Founded 2003 · NYSE: PLTR</span>
+        <span class="fact-tag">$1.3B Maven contract ceiling</span>
+        <span class="fact-tag">DoD Program of Record 2026</span>
+        <span class="fact-tag">20,000+ active users</span>
+        <span class="fact-tag">All 11 combatant commands</span>
+        <span class="fact-tag">NATO MSS adopted 2025</span>
+        <span class="fact-tag">1,000 targets/hour (Maven)</span>
+        <span class="fact-tag">Palantir + Anduril consortium</span>
+        <span class="fact-tag">Claude AI integrated</span>
+        <span class="fact-tag">★★★★ design</span>
+      </div>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-val">$1.3B</div><div class="stat-label">Maven contract ceiling</div></div>
+    <div class="stat-cell"><div class="stat-val">20,000+</div><div class="stat-label">Active military users</div></div>
+    <div class="stat-cell"><div class="stat-val">1,000/hr</div><div class="stat-label">Target recommendations</div></div>
+    <div class="stat-cell"><div class="stat-val">★★★★</div><div class="stat-label">Design quality</div></div>
+  </div>
+  <div class="product-body">
+    <div class="product-screenshot">
+      <div class="screenshot-block">
+        <div class="screenshot-label">AIP for Defense interface</div>
+        <div class="img-slot" id="slot-pa1" onclick="pickImage('slot-pa1')">
+          <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+          <div class="slot-url">palantir.com/platforms/aip/defense</div>
+          <div class="slot-hint">LLM-powered command interface · data fusion · map overlay</div>
+        </div>
+        <div class="screenshot-caption">AIP for Defense — LLM-powered decision support · multi-domain data fusion · geospatial visualization</div>
+      </div>
+      <div class="screenshot-block">
+        <div class="screenshot-label">Maven Smart System dashboard</div>
+        <div class="img-slot" id="slot-pa2" onclick="pickImage('slot-pa2')">
+          <div class="slot-plus">+</div><div class="slot-title">Click to add screenshot</div>
+          <div class="slot-url">Search: "Palantir Maven Smart System interface targeting 2024"</div>
+          <div class="slot-hint">Single pane of glass · intelligence fusion · targeting workflow</div>
+        </div>
+        <div class="screenshot-caption">Maven Smart System — single pane of glass · intelligence fusion · targeting workflow · LLM querying</div>
+      </div>
+    </div>
+    <div class="product-columns">
+      <div class="product-core">
+        <div class="core-section">
+          <div class="core-label">What it does</div>
+          <p class="core-desc">Palantir operates at a higher abstraction layer than our system — it ingests intelligence from satellites, drones, sensors, and databases and helps commanders make decisions. Maven Smart System is now the primary AI operating environment for the entire US military. Most relevant to our project for its logging, incident timeline, replay, and analytics screen design — not real-time sensor control. The "single pane of glass" philosophy and LLM-powered querying of operational data are the key patterns to study.</p>
+        </div>
+        <div class="core-section">
+          <div class="core-label">Key capabilities</div>
+          <ul class="cap-list">
+            <li>Maven Smart System — "single pane of glass" fusing multi-domain sensor data geospatially</li>
+            <li>AIP (AI Platform) — LLM-powered decision support on classified data at all classification levels</li>
+            <li>1,000 targeting recommendations per hour via automated computer vision and AI</li>
+            <li>Open architecture — third-party tools plug into the same underlying data layer</li>
+            <li>Foundry, Gaia, Target Workbench, Maverick, LogX — modular component stack</li>
+            <li>Natural language querying of operational data — "what are the highest-priority targets in sector 4?"</li>
+            <li>Incident timeline and audit trail — full after-action review capability</li>
+            <li>Secure pipeline across unclassified → TS/SCI classification levels</li>
+            <li>Used operationally: Kabul airlift 2021, Ukraine targeting 2022, Operation Epic Fury 2026</li>
+          </ul>
+        </div>
+        <div class="core-section">
+          <div class="core-label">Architecture</div>
+          <div class="arch-tags">
+            <span class="arch-tag">Enterprise cloud</span>
+            <span class="arch-tag">Data ontology</span>
+            <span class="arch-tag">LLM orchestration</span>
+            <span class="arch-tag">Open architecture</span>
+            <span class="arch-tag">All classification levels</span>
+            <span class="arch-tag">Browser-based</span>
+            <span class="arch-tag">Modular component stack</span>
+          </div>
+        </div>
+        <div class="core-section">
+          <div class="core-label">Relevance to our project</div>
+          <div class="rel-wrap">
+            <div class="rel-row"><span class="rel-label">Real-time sensor UI</span><div class="bar-track"><div class="bar-fill" style="width:18%;background:var(--amber)"></div></div></div>
+            <div class="rel-row"><span class="rel-label">Data logging / analytics</span><div class="bar-track"><div class="bar-fill" style="width:92%;background:var(--amber)"></div></div></div>
+            <div class="rel-row"><span class="rel-label">Incident timeline UI</span><div class="bar-track"><div class="bar-fill" style="width:90%;background:var(--amber)"></div></div></div>
+            <div class="rel-row"><span class="rel-label">Design inspiration</span><div class="bar-track"><div class="bar-fill" style="width:80%;background:var(--amber)"></div></div></div>
+          </div>
+        </div>
+        <div class="distinction-box">
+          <div class="d-label">Important distinction</div>
+          Palantir operates at the command and intelligence layer — it processes outcomes and intelligence products, not raw sensor streams. Our system operates at the real-time sensor and operator control layer. Palantir is the reference for our logging, replay, and after-action screens; not our live monitoring and intercept screens.
+        </div>
+      </div>
+      <div class="product-learnings">
+        <div class="learning-group">
+          <div class="learning-title">Key UX/UI patterns</div>
+          <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Single pane of glass</strong> — all data sources — satellites, drones, intelligence reports, sensor feeds — normalized into one geospatial view. No switching between apps to answer "what's happening at location X?"</div></div>
+          <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Natural language data querying</strong> — operators ask questions in plain English; the system responds with structured data and visualizations. The interface reduces operator expertise requirements dramatically.</div></div>
+          <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Open architecture + common data layer</strong> — third-party tools plug into the same underlying data without owning a separate dataset. Every tool sees the same ground truth. Directly applicable to our sensor plugin model.</div></div>
+          <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Incident timeline and audit trail</strong> — full reconstruction of what happened, when, with what confidence, and what actions were taken. The reference for our black box replay feature.</div></div>
+          <div class="learning-item"><div class="bullet b-amber"></div><div class="learning-text"><strong>Data-dense but navigable</strong> — "Bloomberg terminal done right." Heavy information density with strong visual hierarchy that guides the operator's eye to what matters without overwhelming them.</div></div>
+        </div>
+        <div class="learning-group">
+          <div class="learning-title">Apply to our system</div>
+          <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our incident replay screen should be designed like a Palantir timeline — timestamped, filterable, correlated across sensor sources. An operator reviewing an incident 3 hours later should be able to reconstruct exactly what happened and when.</div></div>
+          <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our logging layer should be designed as a queryable data product from day one — not an afterthought. Every operator action, sensor event, and system decision should be timestamped and retrievable.</div></div>
+          <div class="learning-item"><div class="bullet b-green"></div><div class="learning-text">Our sensor plugin model should enforce a common data ontology — position, confidence, classification, timestamp — so every sensor "speaks the same language" and any display component can consume any sensor's output.</div></div>
+        </div>
+        <div class="insight-box">
+          <div class="i-label">Key lesson for our logging and replay features</div>
+          Palantir's core value proposition is making data queryable and auditable long after the fact. Our "black box" replay feature should be designed with the same principle: <strong>every event is a first-class data record</strong>, not just a log entry. Sensor reading → system decision → operator action → device command — each timestamped, correlated, and replay-able as a coherent narrative of the incident.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════ UNIFIED TAKEAWAYS ═══════════════════════════════ -->
+<div class="section" id="takeaways">
+  <div class="section-eyebrow"><span class="num">—</span> Synthesis</div>
+  <h2>Unified UX/UI Takeaways</h2>
+  <div class="section-desc">Principles appearing across 3+ solutions — industry-validated patterns our system must implement.</div>
+  <div class="divider"></div>
+  <div class="takeaway-grid">
+
+    <!-- 01 Dark theme -->
+    <div class="takeaway-card t-blue">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#050810"/>
+        <!-- left dark panel -->
+        <rect x="8" y="8" width="124" height="114" rx="4" fill="#0a1120" stroke="#1a2540" stroke-width="1"/>
+        <!-- map tiles dark -->
+        <rect x="12" y="12" width="56" height="42" rx="2" fill="#0d1a2e"/>
+        <rect x="72" y="12" width="56" height="42" rx="2" fill="#091525"/>
+        <rect x="12" y="58" width="56" height="42" rx="2" fill="#0a1828"/>
+        <rect x="72" y="58" width="56" height="42" rx="2" fill="#0d1a2e"/>
+        <!-- grid lines dark -->
+        <line x1="12" y1="33" x2="128" y2="33" stroke="#1a2540" stroke-width="0.5" opacity="0.5"/>
+        <line x1="12" y1="54" x2="128" y2="54" stroke="#1a2540" stroke-width="0.5" opacity="0.5"/>
+        <line x1="12" y1="79" x2="128" y2="79" stroke="#1a2540" stroke-width="0.5" opacity="0.5"/>
+        <line x1="68" y1="12" x2="68" y2="104" stroke="#1a2540" stroke-width="0.5" opacity="0.5"/>
+        <!-- threat dot red -->
+        <circle cx="55" cy="47" r="5" fill="none" stroke="#f85149" stroke-width="1.5"/>
+        <circle cx="55" cy="47" r="2" fill="#f85149"/>
+        <!-- safe dot green -->
+        <circle cx="90" cy="70" r="3" fill="#3fb950" opacity="0.8"/>
+        <!-- right light panel (contrast) -->
+        <rect x="140" y="8" width="132" height="114" rx="4" fill="#e8edf5" stroke="#c8d0dc" stroke-width="1"/>
+        <!-- light map tiles -->
+        <rect x="144" y="12" width="60" height="44" rx="2" fill="#d0d8e8"/>
+        <rect x="208" y="12" width="60" height="44" rx="2" fill="#dce4f0"/>
+        <rect x="144" y="60" width="60" height="44" rx="2" fill="#d8e0ee"/>
+        <rect x="208" y="60" width="60" height="44" rx="2" fill="#d0d8e8"/>
+        <!-- threat dot on light - hard to see -->
+        <circle cx="174" cy="48" r="5" fill="none" stroke="#e05555" stroke-width="1.5" opacity="0.45"/>
+        <circle cx="174" cy="48" r="2" fill="#e05555" opacity="0.45"/>
+        <!-- labels -->
+        <text x="70" y="115" font-family="monospace" font-size="8" fill="#58a6ff" text-anchor="middle">DARK ✓</text>
+        <text x="207" y="115" font-family="monospace" font-size="8" fill="#888" text-anchor="middle">LIGHT ✗</text>
+        <!-- separator -->
+        <line x1="136" y1="8" x2="136" y2="122" stroke="#21262d" stroke-width="1.5"/>
+      </svg>
+      <div class="takeaway-number">01</div>
+      <div class="takeaway-heading">Dark theme is the universal standard</div>
+      <div class="takeaway-body">Every solution uses dark UI. Operators work in low-light rooms; radar sweeps need contrast; video feeds need neutral surroundings. Dark = less eye fatigue, better video legibility, clearer threat color coding.</div>
+      <div class="takeaway-source">All 11 solutions</div>
+    </div>
+
+    <!-- 02 Map as input -->
+    <div class="takeaway-card t-green">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#050c0a"/>
+        <!-- map background -->
+        <rect x="8" y="8" width="264" height="114" rx="4" fill="#091410"/>
+        <!-- map grid -->
+        <line x1="8" y1="38" x2="272" y2="38" stroke="#0f2018" stroke-width="1"/>
+        <line x1="8" y1="68" x2="272" y2="68" stroke="#0f2018" stroke-width="1"/>
+        <line x1="8" y1="98" x2="272" y2="98" stroke="#0f2018" stroke-width="1"/>
+        <line x1="78" y1="8" x2="78" y2="122" stroke="#0f2018" stroke-width="1"/>
+        <line x1="148" y1="8" x2="148" y2="122" stroke="#0f2018" stroke-width="1"/>
+        <line x1="218" y1="8" x2="218" y2="122" stroke="#0f2018" stroke-width="1"/>
+        <!-- roads -->
+        <line x1="8" y1="65" x2="272" y2="58" stroke="#142820" stroke-width="3"/>
+        <line x1="120" y1="8" x2="135" y2="122" stroke="#142820" stroke-width="2"/>
+        <!-- camera icon -->
+        <rect x="22" y="22" width="18" height="14" rx="2" fill="none" stroke="#58a6ff" stroke-width="1.2"/>
+        <circle cx="31" cy="29" r="3.5" fill="none" stroke="#58a6ff" stroke-width="1"/>
+        <polygon points="40,26 46,23 46,35 40,32" fill="#58a6ff" opacity="0.7"/>
+        <!-- sensor icon -->
+        <circle cx="230" cy="95" r="7" fill="none" stroke="#3fb950" stroke-width="1.2"/>
+        <circle cx="230" cy="95" r="3" fill="#3fb950" opacity="0.6"/>
+        <!-- tap ripple on target -->
+        <circle cx="158" cy="55" r="18" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.3"/>
+        <circle cx="158" cy="55" r="11" fill="none" stroke="#3fb950" stroke-width="1" opacity="0.5"/>
+        <circle cx="158" cy="55" r="5" fill="none" stroke="#f85149" stroke-width="1.5"/>
+        <circle cx="158" cy="55" r="2" fill="#f85149"/>
+        <!-- cursor/tap finger -->
+        <circle cx="164" cy="49" r="4" fill="#3fb950" opacity="0.9"/>
+        <line x1="164" y1="44" x2="164" y2="40" stroke="#3fb950" stroke-width="1.5"/>
+        <line x1="168" y1="47" x2="171" y2="44" stroke="#3fb950" stroke-width="1.5"/>
+        <!-- tooltip -->
+        <rect x="170" y="38" width="88" height="22" rx="3" fill="#0d2018" stroke="#3fb950" stroke-width="1"/>
+        <text x="175" y="52" font-family="monospace" font-size="9" fill="#3fb950">TAP → Select target</text>
+        <!-- no text field label -->
+        <rect x="18" y="100" width="110" height="16" rx="3" fill="#1a0a0a" stroke="#f85149" stroke-width="0.8" opacity="0.7"/>
+        <text x="73" y="111" font-family="monospace" font-size="8" fill="#f85149" text-anchor="middle" opacity="0.7">no coordinate input ✗</text>
+      </svg>
+      <div class="takeaway-number">02</div>
+      <div class="takeaway-heading">Map is the primary input device</div>
+      <div class="takeaway-body">Not just a display. Target selection, camera tasking, drone routing, zone definition — all initiated by map tap. No coordinate text fields in primary workflows. The map is where decisions happen.</div>
+      <div class="takeaway-source">AMC · DroneSentry-C2 · Elysion · VSD-C2</div>
+    </div>
+
+    <!-- 03 Single Actions panel -->
+    <div class="takeaway-card t-amber">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#0d0c05"/>
+        <!-- map area -->
+        <rect x="8" y="8" width="170" height="114" rx="4" fill="#0e110a" stroke="#21262d" stroke-width="1"/>
+        <!-- target on map -->
+        <circle cx="93" cy="60" r="12" fill="none" stroke="#f85149" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <circle cx="93" cy="60" r="4" fill="#f85149"/>
+        <text x="93" y="45" font-family="monospace" font-size="8" fill="#f85149" text-anchor="middle">TARGET #1</text>
+        <!-- Actions panel -->
+        <rect x="184" y="8" width="88" height="114" rx="4" fill="#1a1400" stroke="#e3b341" stroke-width="1"/>
+        <text x="228" y="24" font-family="monospace" font-size="8" fill="#e3b341" text-anchor="middle">ACTIONS</text>
+        <line x1="188" y1="28" x2="268" y2="28" stroke="#e3b341" stroke-width="0.5" opacity="0.5"/>
+        <!-- action buttons -->
+        <rect x="192" y="34" width="72" height="16" rx="3" fill="#2a1f00" stroke="#e3b341" stroke-width="1"/>
+        <text x="228" y="45" font-family="monospace" font-size="8" fill="#e3b341" text-anchor="middle">▶  Verify</text>
+        <rect x="192" y="56" width="72" height="16" rx="3" fill="#3a0a0a" stroke="#f85149" stroke-width="1"/>
+        <text x="228" y="67" font-family="monospace" font-size="8" fill="#f85149" text-anchor="middle">⚡  Intercept</text>
+        <rect x="192" y="78" width="72" height="16" rx="3" fill="#1a1a1a" stroke="#484f58" stroke-width="1"/>
+        <text x="228" y="89" font-family="monospace" font-size="8" fill="#8b949e" text-anchor="middle">✕  Dismiss</text>
+        <!-- arrow from target to panel -->
+        <line x1="176" y1="60" x2="184" y2="60" stroke="#e3b341" stroke-width="1.5" marker-end="url(#arr)"/>
+        <defs><marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e3b341"/></marker></defs>
+        <!-- label -->
+        <text x="228" y="112" font-family="monospace" font-size="7" fill="#e3b341" opacity="0.6" text-anchor="middle">one place, always</text>
+      </svg>
+      <div class="takeaway-number">03</div>
+      <div class="takeaway-heading">Single consolidated Actions panel</div>
+      <div class="takeaway-body">All operator responses in one place. When a threat appears, the operator must not hunt for the button. DroneSentry-C2 rebuilt their entire UI around this single insight in v10.</div>
+      <div class="takeaway-source">DroneSentry-C2 · Elysion · XTEND XOS</div>
+    </div>
+
+    <!-- 04 Operator on the loop -->
+    <div class="takeaway-card t-purple">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#0a0810"/>
+        <!-- AI cycle left -->
+        <circle cx="72" cy="65" r="40" fill="none" stroke="#d2a8ff" stroke-width="1" opacity="0.2"/>
+        <text x="72" y="30" font-family="monospace" font-size="7" fill="#d2a8ff" text-anchor="middle" opacity="0.6">DETECT</text>
+        <text x="108" y="68" font-family="monospace" font-size="7" fill="#d2a8ff" text-anchor="middle" opacity="0.6">SLEW</text>
+        <text x="72" y="106" font-family="monospace" font-size="7" fill="#d2a8ff" text-anchor="middle" opacity="0.6">TRACK</text>
+        <text x="36" y="68" font-family="monospace" font-size="7" fill="#d2a8ff" text-anchor="middle" opacity="0.6">FUSE</text>
+        <!-- AI core -->
+        <circle cx="72" cy="65" r="18" fill="#1c1028" stroke="#d2a8ff" stroke-width="1.5"/>
+        <text x="72" y="62" font-family="monospace" font-size="9" fill="#d2a8ff" text-anchor="middle" font-weight="bold">AI</text>
+        <text x="72" y="73" font-family="monospace" font-size="6" fill="#d2a8ff" text-anchor="middle">AUTO</text>
+        <!-- arrows on AI loop -->
+        <path d="M72,25 A40,40 0 0,1 112,65" fill="none" stroke="#d2a8ff" stroke-width="1" marker-end="url(#parr)" opacity="0.5"/>
+        <path d="M112,65 A40,40 0 0,1 72,105" fill="none" stroke="#d2a8ff" stroke-width="1" marker-end="url(#parr)" opacity="0.5"/>
+        <path d="M72,105 A40,40 0 0,1 32,65" fill="none" stroke="#d2a8ff" stroke-width="1" marker-end="url(#parr)" opacity="0.5"/>
+        <path d="M32,65 A40,40 0 0,1 72,25" fill="none" stroke="#d2a8ff" stroke-width="1" marker-end="url(#parr)" opacity="0.5"/>
+        <defs><marker id="parr" markerWidth="5" markerHeight="5" refX="3" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#d2a8ff"/></marker></defs>
+        <!-- connector to operator -->
+        <line x1="140" y1="65" x2="160" y2="65" stroke="#d2a8ff" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <!-- operator box -->
+        <rect x="160" y="42" width="112" height="46" rx="4" fill="#150e20" stroke="#d2a8ff" stroke-width="1.2"/>
+        <!-- operator head -->
+        <circle cx="185" cy="58" r="8" fill="none" stroke="#d2a8ff" stroke-width="1.2"/>
+        <circle cx="185" cy="57" r="3" fill="#d2a8ff" opacity="0.5"/>
+        <path d="M177,70 Q185,66 193,70" fill="none" stroke="#d2a8ff" stroke-width="1" opacity="0.5"/>
+        <!-- operator label -->
+        <text x="226" y="58" font-family="monospace" font-size="8" fill="#d2a8ff" text-anchor="middle">CONFIRM</text>
+        <text x="226" y="70" font-family="monospace" font-size="8" fill="#d2a8ff" text-anchor="middle">OVERRIDE</text>
+        <!-- escalate badge -->
+        <text x="72" y="120" font-family="monospace" font-size="7" fill="#d2a8ff" text-anchor="middle" opacity="0.5">AI does the work · operator decides</text>
+      </svg>
+      <div class="takeaway-number">04</div>
+      <div class="takeaway-heading">Operator-on-the-loop, not in-the-loop</div>
+      <div class="takeaway-body">AI handles detection, camera slewing, and tracking by default. The operator confirms, overrides, or escalates — not approves every sub-task. Cuts reaction time dramatically.</div>
+      <div class="takeaway-source">Walaris · Elysion · DroneSentry-C2</div>
+    </div>
+
+    <!-- 05 Threat confidence -->
+    <div class="takeaway-card t-orange">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#0d0800"/>
+        <!-- three target rows -->
+        <!-- row 1: confirmed -->
+        <rect x="8" y="12" width="264" height="30" rx="3" fill="#1a1200" stroke="#f0883e" stroke-width="1"/>
+        <circle cx="30" cy="27" r="7" fill="none" stroke="#f0883e" stroke-width="1.5"/>
+        <circle cx="30" cy="27" r="3" fill="#f0883e"/>
+        <text x="46" y="24" font-family="monospace" font-size="8" fill="#f0f6fc">TARGET-001</text>
+        <text x="46" y="34" font-family="monospace" font-size="7" fill="#8b949e">DJI Mavic · 340m · 12m/s</text>
+        <!-- confidence badge confirmed -->
+        <rect x="174" y="18" width="60" height="14" rx="7" fill="#2a1a00" stroke="#f0883e" stroke-width="1"/>
+        <text x="204" y="28" font-family="monospace" font-size="7" fill="#f0883e" text-anchor="middle">CONFIRMED</text>
+        <!-- confidence bar -->
+        <rect x="240" y="20" width="26" height="8" rx="2" fill="#1a1200"/>
+        <rect x="240" y="20" width="24" height="8" rx="2" fill="#f0883e" opacity="0.9"/>
+        <text x="252" y="28" font-family="monospace" font-size="6" fill="#0d0800" text-anchor="middle" font-weight="bold">94%</text>
+
+        <!-- row 2: probable -->
+        <rect x="8" y="48" width="264" height="30" rx="3" fill="#141200" stroke="#e3b341" stroke-width="1"/>
+        <circle cx="30" cy="63" r="7" fill="none" stroke="#e3b341" stroke-width="1.5" stroke-dasharray="3,1"/>
+        <circle cx="30" cy="63" r="3" fill="#e3b341" opacity="0.6"/>
+        <text x="46" y="60" font-family="monospace" font-size="8" fill="#c9d1d9">TARGET-002</text>
+        <text x="46" y="70" font-family="monospace" font-size="7" fill="#8b949e">Unknown · 610m · 8m/s</text>
+        <rect x="174" y="54" width="60" height="14" rx="7" fill="#1a1600" stroke="#e3b341" stroke-width="1"/>
+        <text x="204" y="64" font-family="monospace" font-size="7" fill="#e3b341" text-anchor="middle">PROBABLE</text>
+        <rect x="240" y="56" width="26" height="8" rx="2" fill="#141200"/>
+        <rect x="240" y="56" width="17" height="8" rx="2" fill="#e3b341" opacity="0.8"/>
+        <text x="252" y="64" font-family="monospace" font-size="6" fill="#0d0800" text-anchor="middle" font-weight="bold">67%</text>
+
+        <!-- row 3: unverified -->
+        <rect x="8" y="84" width="264" height="30" rx="3" fill="#101010" stroke="#484f58" stroke-width="1"/>
+        <circle cx="30" cy="99" r="7" fill="none" stroke="#484f58" stroke-width="1.5" stroke-dasharray="2,2"/>
+        <text x="46" y="96" font-family="monospace" font-size="8" fill="#8b949e">TARGET-003</text>
+        <text x="46" y="106" font-family="monospace" font-size="7" fill="#484f58">Possible bird · 890m</text>
+        <rect x="174" y="90" width="60" height="14" rx="7" fill="#141414" stroke="#484f58" stroke-width="1"/>
+        <text x="204" y="100" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">UNVERIFIED</text>
+        <rect x="240" y="92" width="26" height="8" rx="2" fill="#0e0e0e"/>
+        <rect x="240" y="92" width="8" height="8" rx="2" fill="#484f58" opacity="0.6"/>
+        <text x="252" y="100" font-family="monospace" font-size="6" fill="#484f58" text-anchor="middle" font-weight="bold">29%</text>
+      </svg>
+      <div class="takeaway-number">05</div>
+      <div class="takeaway-heading">Threat confidence always visible</div>
+      <div class="takeaway-body">Every detected target shows classification status (Confirmed / Probable / Unverified) and confidence level. The system communicates its own certainty. Prevents acting on false positives.</div>
+      <div class="takeaway-source">Walaris · DroneSentry-C2 · Elysion</div>
+    </div>
+
+    <!-- 06 Operational mode -->
+    <div class="takeaway-card t-teal">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#050e0c"/>
+        <!-- top bar simulation -->
+        <rect x="8" y="8" width="264" height="28" rx="4" fill="#0a1a16" stroke="#21262d" stroke-width="1"/>
+        <!-- mode tabs -->
+        <rect x="16" y="13" width="64" height="18" rx="3" fill="#0f1f1a" stroke="#30363d" stroke-width="0.8"/>
+        <text x="48" y="25" font-family="monospace" font-size="8" fill="#484f58" text-anchor="middle">CALIBRATION</text>
+        <rect x="86" y="13" width="54" height="18" rx="3" fill="#0f1f1a" stroke="#30363d" stroke-width="0.8"/>
+        <text x="113" y="25" font-family="monospace" font-size="8" fill="#484f58" text-anchor="middle">MONITOR</text>
+        <!-- ACTIVE mode -->
+        <rect x="146" y="11" width="70" height="22" rx="3" fill="#0a2520" stroke="#39d3c3" stroke-width="1.5"/>
+        <circle cx="157" cy="22" r="4" fill="#39d3c3"/>
+        <text x="195" y="26" font-family="monospace" font-size="9" fill="#39d3c3" text-anchor="middle" font-weight="bold">OPERATIONAL</text>
+        <!-- status indicators -->
+        <circle cx="235" cy="22" r="5" fill="#3fb950"/>
+        <text x="248" y="26" font-family="monospace" font-size="8" fill="#3fb950">14</text>
+        <text x="262" y="26" font-family="monospace" font-size="8" fill="#484f58">▾</text>
+        <!-- main content below -->
+        <rect x="8" y="44" width="264" height="78" rx="4" fill="#091410" stroke="#21262d" stroke-width="1"/>
+        <!-- radar sweep animation hint -->
+        <circle cx="140" cy="83" r="35" fill="none" stroke="#39d3c3" stroke-width="0.5" opacity="0.15"/>
+        <circle cx="140" cy="83" r="22" fill="none" stroke="#39d3c3" stroke-width="0.5" opacity="0.2"/>
+        <circle cx="140" cy="83" r="10" fill="none" stroke="#39d3c3" stroke-width="0.5" opacity="0.3"/>
+        <!-- sweep line -->
+        <line x1="140" y1="83" x2="165" y2="60" stroke="#39d3c3" stroke-width="1.5" opacity="0.6"/>
+        <!-- threat blip -->
+        <circle cx="118" cy="68" r="3" fill="#f85149" opacity="0.9"/>
+        <!-- mode change arrow reminder -->
+        <text x="140" y="116" font-family="monospace" font-size="7" fill="#39d3c3" text-anchor="middle" opacity="0.5">always visible · 1-click switch</text>
+      </svg>
+      <div class="takeaway-number">06</div>
+      <div class="takeaway-heading">Operational mode always declared</div>
+      <div class="takeaway-body">Calibration / Monitor / Operational — always in the top bar. The operator must never be uncertain whether the system is actively scanning. Mode switching = one click, never buried in a menu.</div>
+      <div class="takeaway-source">DroneSentry-C2 · Elysion · AMC</div>
+    </div>
+
+    <!-- 07 Mission abstraction -->
+    <div class="takeaway-card t-red">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#0d0505"/>
+        <!-- operator intent top -->
+        <rect x="8" y="8" width="264" height="28" rx="4" fill="#200a0a" stroke="#f85149" stroke-width="1"/>
+        <text x="20" y="20" font-family="monospace" font-size="8" fill="#8b949e">OPERATOR</text>
+        <text x="20" y="30" font-family="monospace" font-size="9" fill="#f0f6fc" font-weight="bold">"Intercept Target #1"</text>
+        <!-- down arrow -->
+        <line x1="140" y1="38" x2="140" y2="52" stroke="#f85149" stroke-width="1.5"/>
+        <polygon points="134,52 140,60 146,52" fill="#f85149"/>
+        <!-- system resolves box -->
+        <rect x="60" y="60" width="160" height="22" rx="3" fill="#1a0808" stroke="#484f58" stroke-width="0.8"/>
+        <text x="140" y="74" font-family="monospace" font-size="7" fill="#8b949e" text-anchor="middle">SYSTEM RESOLVES → nearest drone assigned</text>
+        <!-- platform commands -->
+        <line x1="80" y1="84" x2="55" y2="102" stroke="#484f58" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="140" y1="84" x2="140" y2="102" stroke="#484f58" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="200" y1="84" x2="225" y2="102" stroke="#484f58" stroke-width="1" stroke-dasharray="3,2"/>
+        <!-- drone A (selected) -->
+        <rect x="18" y="102" width="72" height="20" rx="3" fill="#2a0808" stroke="#f85149" stroke-width="1.2"/>
+        <text x="54" y="115" font-family="monospace" font-size="7" fill="#f85149" text-anchor="middle">DRONE-A · LAUNCH</text>
+        <!-- drone B -->
+        <rect x="104" y="102" width="72" height="20" rx="3" fill="#101010" stroke="#30363d" stroke-width="0.8"/>
+        <text x="140" y="115" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">DRONE-B · STANDBY</text>
+        <!-- drone C -->
+        <rect x="190" y="102" width="72" height="20" rx="3" fill="#101010" stroke="#30363d" stroke-width="0.8"/>
+        <text x="226" y="115" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">DRONE-C · STANDBY</text>
+      </svg>
+      <div class="takeaway-number">07</div>
+      <div class="takeaway-heading">Mission abstraction over platform control</div>
+      <div class="takeaway-body">Operator commands missions ("intercept target"), not platforms ("drone A, fly to coordinate X"). System resolves intent into device commands. The right model for interceptor dispatch.</div>
+      <div class="takeaway-source">XTEND XOS · Elysion · DroneSentry-C2</div>
+    </div>
+
+    <!-- 08 Layout presets -->
+    <div class="takeaway-card t-pink">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#0d0508"/>
+        <!-- three layout thumbnails -->
+        <!-- MONITOR preset -->
+        <rect x="8" y="22" width="76" height="100" rx="3" fill="#150810" stroke="#ff7b72" stroke-width="1.5"/>
+        <text x="46" y="18" font-family="monospace" font-size="7" fill="#ff7b72" text-anchor="middle">MONITOR</text>
+        <!-- large map -->
+        <rect x="12" y="26" width="68" height="60" rx="2" fill="#091410"/>
+        <circle cx="46" cy="56" r="6" fill="none" stroke="#3fb950" stroke-width="1"/>
+        <circle cx="46" cy="56" r="2" fill="#3fb950"/>
+        <!-- small video strip -->
+        <rect x="12" y="90" width="32" height="22" rx="1" fill="#100810"/>
+        <rect x="48" y="90" width="32" height="22" rx="1" fill="#0a1020"/>
+
+        <!-- VERIFY preset -->
+        <rect x="102" y="22" width="76" height="100" rx="3" fill="#150810" stroke="#30363d" stroke-width="1"/>
+        <text x="140" y="18" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">VERIFY</text>
+        <!-- half map half video -->
+        <rect x="106" y="26" width="34" height="88" rx="2" fill="#091410"/>
+        <circle cx="123" cy="70" r="5" fill="none" stroke="#3fb950" stroke-width="1"/>
+        <circle cx="123" cy="70" r="2" fill="#3fb950"/>
+        <rect x="144" y="26" width="30" height="88" rx="2" fill="#100810"/>
+        <!-- camera crosshair -->
+        <line x1="149" y1="70" x2="169" y2="70" stroke="#58a6ff" stroke-width="0.8" opacity="0.5"/>
+        <line x1="159" y1="60" x2="159" y2="80" stroke="#58a6ff" stroke-width="0.8" opacity="0.5"/>
+
+        <!-- INTERCEPT preset -->
+        <rect x="196" y="22" width="76" height="100" rx="3" fill="#150810" stroke="#30363d" stroke-width="1"/>
+        <text x="234" y="18" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">INTERCEPT</text>
+        <!-- map top -->
+        <rect x="200" y="26" width="68" height="44" rx="2" fill="#091410"/>
+        <circle cx="234" cy="48" r="5" fill="none" stroke="#f85149" stroke-width="1"/>
+        <!-- actions panel bottom -->
+        <rect x="200" y="74" width="68" height="40" rx="2" fill="#1a0808" stroke="#f85149" stroke-width="0.8"/>
+        <rect x="204" y="78" width="60" height="12" rx="2" fill="#2a0a0a" stroke="#f85149" stroke-width="0.8"/>
+        <text x="234" y="87" font-family="monospace" font-size="7" fill="#f85149" text-anchor="middle">⚡  INTERCEPT</text>
+        <rect x="204" y="95" width="60" height="12" rx="2" fill="#141414" stroke="#30363d" stroke-width="0.5"/>
+        <text x="234" y="104" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">✕  Dismiss</text>
+      </svg>
+      <div class="takeaway-number">08</div>
+      <div class="takeaway-heading">Layout presets, not free-form windows</div>
+      <div class="takeaway-body">2–3 fixed layouts tied to operational phases (Monitor / Verify / Intercept). Layout changes with mode automatically. Never ask operators to manage window arrangement during an incident.</div>
+      <div class="takeaway-source">Eyeson · DroneSentry-C2 · VSD-C2</div>
+    </div>
+
+    <!-- 09 Pre-launch safety gate -->
+    <div class="takeaway-card t-gray">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#080808"/>
+        <!-- checklist panel -->
+        <rect x="8" y="8" width="160" height="114" rx="4" fill="#101010" stroke="#21262d" stroke-width="1"/>
+        <text x="88" y="24" font-family="monospace" font-size="8" fill="#8b949e" text-anchor="middle">PRE-LAUNCH GATE</text>
+        <line x1="16" y1="28" x2="160" y2="28" stroke="#21262d" stroke-width="0.8"/>
+        <!-- check items -->
+        <circle cx="26" cy="44" r="6" fill="#0d2018" stroke="#3fb950" stroke-width="1.2"/>
+        <text x="26" y="47" font-family="monospace" font-size="8" fill="#3fb950" text-anchor="middle">✓</text>
+        <text x="40" y="41" font-family="monospace" font-size="7" fill="#c9d1d9">GPS lock</text>
+        <text x="40" y="51" font-family="monospace" font-size="7" fill="#3fb950">4 satellites</text>
+
+        <circle cx="26" cy="68" r="6" fill="#0d2018" stroke="#3fb950" stroke-width="1.2"/>
+        <text x="26" y="71" font-family="monospace" font-size="8" fill="#3fb950" text-anchor="middle">✓</text>
+        <text x="40" y="65" font-family="monospace" font-size="7" fill="#c9d1d9">Battery</text>
+        <text x="40" y="75" font-family="monospace" font-size="7" fill="#3fb950">78% ≥ 30%</text>
+
+        <circle cx="26" cy="92" r="6" fill="#0d2018" stroke="#3fb950" stroke-width="1.2"/>
+        <text x="26" y="95" font-family="monospace" font-size="8" fill="#3fb950" text-anchor="middle">✓</text>
+        <text x="40" y="89" font-family="monospace" font-size="7" fill="#c9d1d9">Confidence</text>
+        <text x="40" y="99" font-family="monospace" font-size="7" fill="#3fb950">94% ≥ 80%</text>
+
+        <circle cx="26" cy="116" r="6" fill="#0d2018" stroke="#3fb950" stroke-width="1.2"/>
+        <text x="26" y="119" font-family="monospace" font-size="8" fill="#3fb950" text-anchor="middle">✓</text>
+        <text x="40" y="113" font-family="monospace" font-size="7" fill="#c9d1d9">Airspace</text>
+        <text x="40" y="123" font-family="monospace" font-size="7" fill="#3fb950">CLEAR</text>
+
+        <!-- launch button (green = all pass) -->
+        <rect x="176" y="8" width="96" height="114" rx="4" fill="#0d2018" stroke="#3fb950" stroke-width="1.5"/>
+        <text x="224" y="46" font-family="monospace" font-size="9" fill="#3fb950" text-anchor="middle">ALL</text>
+        <text x="224" y="58" font-family="monospace" font-size="9" fill="#3fb950" text-anchor="middle">CLEAR</text>
+        <circle cx="224" cy="80" r="16" fill="#1a3a20" stroke="#3fb950" stroke-width="2"/>
+        <text x="224" y="84" font-family="monospace" font-size="10" fill="#3fb950" text-anchor="middle" font-weight="bold">⚡</text>
+        <text x="224" y="110" font-family="monospace" font-size="7" fill="#3fb950" text-anchor="middle">LAUNCH</text>
+      </svg>
+      <div class="takeaway-number">09</div>
+      <div class="takeaway-heading">Pre-launch safety gate</div>
+      <div class="takeaway-body">Before interceptor dispatch: auto-check GPS lock, battery, target confidence, airspace clear. Visual go/no-go. Block launch until all pass. Force-override requires explicit confirmation step.</div>
+      <div class="takeaway-source">Auterion AMC · Elysion</div>
+    </div>
+
+    <!-- 10 Stream quality -->
+    <div class="takeaway-card t-blue">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#050810"/>
+        <!-- 4 video feeds -->
+        <!-- HD -->
+        <rect x="8" y="8" width="124" height="54" rx="3" fill="#091420"/>
+        <rect x="8" y="8" width="124" height="54" rx="3" fill="none" stroke="#3fb950" stroke-width="1.2"/>
+        <!-- camera view lines -->
+        <line x1="20" y1="20" x2="120" y2="20" stroke="#0f2030" stroke-width="1"/>
+        <line x1="20" y1="30" x2="120" y2="30" stroke="#0f2030" stroke-width="1"/>
+        <line x1="20" y1="40" x2="120" y2="40" stroke="#0f2030" stroke-width="1"/>
+        <line x1="20" y1="50" x2="80" y2="50" stroke="#0f2030" stroke-width="1"/>
+        <!-- drone in feed -->
+        <rect x="55" y="25" width="14" height="8" rx="1" fill="none" stroke="#f85149" stroke-width="1"/>
+        <text x="70" y="32" font-family="monospace" font-size="6" fill="#f85149">▸</text>
+        <!-- quality badge HD -->
+        <rect x="12" y="50" width="26" height="10" rx="2" fill="#0d2018"/>
+        <circle cx="18" cy="55" r="3" fill="#3fb950"/>
+        <text x="30" y="58" font-family="monospace" font-size="7" fill="#3fb950">HD</text>
+        <text x="78" y="58" font-family="monospace" font-size="7" fill="#3fb950">CAM-1 · PTZ</text>
+
+        <!-- SD -->
+        <rect x="148" y="8" width="124" height="54" rx="3" fill="#10100a"/>
+        <rect x="148" y="8" width="124" height="54" rx="3" fill="none" stroke="#e3b341" stroke-width="1.2"/>
+        <line x1="160" y1="20" x2="260" y2="20" stroke="#1a1a08" stroke-width="1"/>
+        <line x1="160" y1="30" x2="260" y2="30" stroke="#1a1a08" stroke-width="1"/>
+        <line x1="160" y1="40" x2="220" y2="40" stroke="#1a1a08" stroke-width="1"/>
+        <rect x="12" y="50" width="26" height="10" rx="2" fill="#0d2018" x="152" y="50"/>
+        <rect x="152" y="50" width="26" height="10" rx="2" fill="#1a1500"/>
+        <circle cx="158" cy="55" r="3" fill="#e3b341"/>
+        <text x="170" y="58" font-family="monospace" font-size="7" fill="#e3b341">SD</text>
+        <text x="208" y="58" font-family="monospace" font-size="7" fill="#e3b341">CAM-2 · Fixed</text>
+
+        <!-- DEGRADED -->
+        <rect x="8" y="68" width="124" height="54" rx="3" fill="#1a0808"/>
+        <rect x="8" y="68" width="124" height="54" rx="3" fill="none" stroke="#f85149" stroke-width="1.2"/>
+        <!-- degraded visual noise lines -->
+        <line x1="10" y1="78" x2="130" y2="75" stroke="#2a1010" stroke-width="2"/>
+        <line x1="10" y1="88" x2="80" y2="91" stroke="#2a1010" stroke-width="3"/>
+        <line x1="40" y1="96" x2="130" y2="93" stroke="#2a1010" stroke-width="2"/>
+        <text x="70" y="98" font-family="monospace" font-size="8" fill="#f85149" text-anchor="middle" opacity="0.6">SIGNAL WEAK</text>
+        <rect x="12" y="110" width="36" height="10" rx="2" fill="#2a0808"/>
+        <circle cx="18" cy="115" r="3" fill="#f85149"/>
+        <text x="32" y="118" font-family="monospace" font-size="7" fill="#f85149">DEGRAD</text>
+        <text x="80" y="118" font-family="monospace" font-size="7" fill="#f85149">CAM-3</text>
+
+        <!-- LOST -->
+        <rect x="148" y="68" width="124" height="54" rx="3" fill="#0a0a0a"/>
+        <rect x="148" y="68" width="124" height="54" rx="3" fill="none" stroke="#484f58" stroke-width="1.2" stroke-dasharray="4,2"/>
+        <text x="210" y="96" font-family="monospace" font-size="10" fill="#21262d" text-anchor="middle">⬛ LOST</text>
+        <rect x="152" y="110" width="26" height="10" rx="2" fill="#141414"/>
+        <circle cx="158" cy="115" r="3" fill="#484f58"/>
+        <text x="170" y="118" font-family="monospace" font-size="7" fill="#484f58">NO SIGNAL</text>
+        <text x="228" y="118" font-family="monospace" font-size="7" fill="#484f58">CAM-4</text>
+      </svg>
+      <div class="takeaway-number">10</div>
+      <div class="takeaway-heading">Stream quality always declared</div>
+      <div class="takeaway-body">Every video pane shows quality: 🟢 HD / 🟡 SD / 🔴 Degraded / ⬛ Lost. Silent failure is the worst outcome — operator may act on a frozen or stale frame. Quality is never implied.</div>
+      <div class="takeaway-source">Eyeson · DroneSentry-C2</div>
+    </div>
+
+    <!-- 11 Persistent device strip -->
+    <div class="takeaway-card t-green">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#050c05"/>
+        <!-- main content area (map placeholder) -->
+        <rect x="8" y="8" width="264" height="82" rx="4" fill="#091410" stroke="#21262d" stroke-width="1"/>
+        <text x="140" y="52" font-family="monospace" font-size="10" fill="#0f2018" text-anchor="middle">MAP VIEW</text>
+        <!-- persistent strip -->
+        <rect x="8" y="96" width="264" height="26" rx="4" fill="#0a1a0a" stroke="#21262d" stroke-width="1"/>
+        <!-- tile: drone OK -->
+        <rect x="12" y="100" width="54" height="18" rx="2" fill="#0d2018" stroke="#3fb950" stroke-width="1"/>
+        <text x="22" y="108" font-family="monospace" font-size="7" fill="#3fb950">🚁</text>
+        <text x="32" y="107" font-family="monospace" font-size="6" fill="#c9d1d9">DRONE-A</text>
+        <text x="32" y="114" font-family="monospace" font-size="6" fill="#3fb950">78% · READY</text>
+        <!-- tile: drone low battery -->
+        <rect x="70" y="100" width="54" height="18" rx="2" fill="#1a1200" stroke="#e3b341" stroke-width="1"/>
+        <text x="80" y="108" font-family="monospace" font-size="7" fill="#e3b341">🚁</text>
+        <text x="90" y="107" font-family="monospace" font-size="6" fill="#c9d1d9">DRONE-B</text>
+        <text x="90" y="114" font-family="monospace" font-size="6" fill="#e3b341">24% · LOW</text>
+        <!-- tile: camera ok -->
+        <rect x="128" y="100" width="54" height="18" rx="2" fill="#0d2018" stroke="#3fb950" stroke-width="1"/>
+        <text x="138" y="108" font-family="monospace" font-size="7" fill="#3fb950">📷</text>
+        <text x="148" y="107" font-family="monospace" font-size="6" fill="#c9d1d9">CAM-1</text>
+        <text x="148" y="114" font-family="monospace" font-size="6" fill="#3fb950">TRACKING</text>
+        <!-- tile: sensor fault -->
+        <rect x="186" y="100" width="54" height="18" rx="2" fill="#2a0808" stroke="#f85149" stroke-width="1.5"/>
+        <text x="196" y="108" font-family="monospace" font-size="7" fill="#f85149">📡</text>
+        <text x="206" y="107" font-family="monospace" font-size="6" fill="#f0f6fc">RADAR-1</text>
+        <text x="206" y="114" font-family="monospace" font-size="6" fill="#f85149">⚠ FAULT</text>
+        <!-- tile: radar ok -->
+        <rect x="244" y="100" width="24" height="18" rx="2" fill="#0a1410" stroke="#30363d" stroke-width="0.8"/>
+        <text x="256" y="108" font-family="monospace" font-size="7" fill="#484f58">📡</text>
+        <text x="256" y="115" font-family="monospace" font-size="5" fill="#484f58" text-anchor="middle">RDR-2</text>
+        <!-- label below -->
+        <text x="140" y="127" font-family="monospace" font-size="6" fill="#3fb950" text-anchor="middle" opacity="0.5">always visible · no navigation needed</text>
+      </svg>
+      <div class="takeaway-number">11</div>
+      <div class="takeaway-heading">Persistent device strip</div>
+      <div class="takeaway-body">Always-visible strip at screen bottom. One tile per active device (drone, camera, sensor): battery, signal, state. Tile turns red on fault. No navigating menus to check device health.</div>
+      <div class="takeaway-source">XTEND XOS · AMC · DroneSentry-C2</div>
+    </div>
+
+    <!-- 12 One fused target -->
+    <div class="takeaway-card t-amber">
+      <svg viewBox="0 0 280 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;margin-bottom:14px;display:block">
+        <rect width="280" height="130" fill="#0d0c05"/>
+        <!-- raw sensors left -->
+        <text x="55" y="14" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">RAW INPUTS</text>
+        <rect x="8" y="18" width="94" height="14" rx="2" fill="#141200" stroke="#30363d" stroke-width="0.8"/>
+        <text x="55" y="28" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">RADAR: 51.2847°N 0.3421°E</text>
+        <rect x="8" y="36" width="94" height="14" rx="2" fill="#141200" stroke="#30363d" stroke-width="0.8"/>
+        <text x="55" y="46" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">RF: DJI-SN#44821 · 2.4GHz</text>
+        <rect x="8" y="54" width="94" height="14" rx="2" fill="#141200" stroke="#30363d" stroke-width="0.8"/>
+        <text x="55" y="64" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">ACOUSTIC: 340m bearing 047°</text>
+        <rect x="8" y="72" width="94" height="14" rx="2" fill="#141200" stroke="#30363d" stroke-width="0.8"/>
+        <text x="55" y="82" font-family="monospace" font-size="7" fill="#484f58" text-anchor="middle">CAM: Obj class 0.89 conf</text>
+        <!-- lines converging -->
+        <line x1="102" y1="25" x2="136" y2="65" stroke="#e3b341" stroke-width="0.8" opacity="0.4"/>
+        <line x1="102" y1="43" x2="136" y2="65" stroke="#e3b341" stroke-width="0.8" opacity="0.4"/>
+        <line x1="102" y1="61" x2="136" y2="65" stroke="#e3b341" stroke-width="0.8" opacity="0.4"/>
+        <line x1="102" y1="79" x2="136" y2="65" stroke="#e3b341" stroke-width="0.8" opacity="0.4"/>
+        <!-- fusion core -->
+        <circle cx="148" cy="65" r="14" fill="#1a1500" stroke="#e3b341" stroke-width="1.5"/>
+        <text x="148" y="62" font-family="monospace" font-size="7" fill="#e3b341" text-anchor="middle">FUSE</text>
+        <text x="148" y="72" font-family="monospace" font-size="6" fill="#e3b341" text-anchor="middle">ENGINE</text>
+        <!-- output: fused object -->
+        <line x1="162" y1="65" x2="176" y2="65" stroke="#e3b341" stroke-width="1.5" marker-end="url(#earr)"/>
+        <defs><marker id="earr" markerWidth="5" markerHeight="5" refX="3" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5 Z" fill="#e3b341"/></marker></defs>
+        <rect x="178" y="20" width="94" height="90" rx="4" fill="#1a1500" stroke="#e3b341" stroke-width="1.5"/>
+        <text x="225" y="34" font-family="monospace" font-size="8" fill="#e3b341" text-anchor="middle">TARGET #1</text>
+        <line x1="182" y1="38" x2="268" y2="38" stroke="#e3b341" stroke-width="0.5" opacity="0.4"/>
+        <text x="225" y="50" font-family="monospace" font-size="7" fill="#c9d1d9" text-anchor="middle">DJI Mavic · CONFIRMED</text>
+        <text x="225" y="62" font-family="monospace" font-size="7" fill="#c9d1d9" text-anchor="middle">94% confidence</text>
+        <text x="225" y="74" font-family="monospace" font-size="7" fill="#c9d1d9" text-anchor="middle">12 m/s · 047°</text>
+        <text x="225" y="86" font-family="monospace" font-size="7" fill="#c9d1d9" text-anchor="middle">340m · Alt 28m</text>
+        <text x="225" y="98" font-family="monospace" font-size="7" fill="#3fb950" text-anchor="middle">4 sensors agree</text>
+        <!-- fused label -->
+        <text x="225" y="107" font-family="monospace" font-size="6" fill="#e3b341" text-anchor="middle">ONE OBJECT · OPERATOR SEES</text>
+      </svg>
+      <div class="takeaway-number">12</div>
+      <div class="takeaway-heading">One fused target, not raw sensor events</div>
+      <div class="takeaway-body">Operator sees one target object with merged data from radar + RF + acoustic + camera. System fuses; operator decides. Showing raw sensor data to operators creates confusion and slows response.</div>
+      <div class="takeaway-source">Elysion · DroneSentry-C2 · Walaris · Aaronia</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════ DESIGN DECISIONS TABLE ═══════════════════════════════ -->
+<div class="section" id="decisions">
+  <div class="section-eyebrow"><span class="num">—</span> Application</div>
+  <h2>Design Decisions for Our Control Center</h2>
+  <div class="section-desc">Concrete UI decisions derived from the research — applied directly to our system.</div>
+  <div class="divider"></div>
+  <table class="decision-table">
+    <thead>
+      <tr><th>UI Element</th><th>Recommended Pattern</th><th>Source</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Color scheme</strong></td>
+        <td>Dark background (#0d1117 family). Green = safe/nominal, amber = alert, red = threat/emergency, blue = informational. Color encodes meaning only — never decorative.</td>
+        <td><span class="chip">All solutions</span></td>
+      </tr>
+      <tr>
+        <td><strong>Main layout</strong></td>
+        <td>Map ≥ 60% of width. Right column: camera feed (top) + Actions panel (bottom). Persistent device strip at full-width bottom edge.</td>
+        <td><span class="chip">DroneSentry-C2</span> <span class="chip">Elysion</span></td>
+      </tr>
+      <tr>
+        <td><strong>Target display</strong></td>
+        <td>One fused object per threat. Show: ID, classification badge (Confirmed / Probable / Unverified), confidence %, speed, heading, sensor source count, operator location (if RF available).</td>
+        <td><span class="chip">Walaris</span> <span class="chip">Elysion</span> <span class="chip">Sentrycs</span></td>
+      </tr>
+      <tr>
+        <td><strong>Camera control</strong></td>
+        <td>Auto-track on by default. "Take manual control" overlaid on feed. PTZ joystick visible only in manual mode. Returns to auto-track after 30s idle. Slew-to-cue on map tap is always active.</td>
+        <td><span class="chip">Walaris</span> <span class="chip">VSD-C2</span></td>
+      </tr>
+      <tr>
+        <td><strong>Interceptor dispatch</strong></td>
+        <td>Map tap on target → "Launch interceptor" in Actions panel → pre-launch checklist auto-runs (GPS ✓, battery ✓, confidence ✓) → confirm → dispatch. No manual coordinate entry.</td>
+        <td><span class="chip">XTEND XOS</span> <span class="chip">AMC</span> <span class="chip">Elysion</span></td>
+      </tr>
+      <tr>
+        <td><strong>Alert design</strong></td>
+        <td>Every alert = decision prompt. "[Target — 87% confidence] → [Verify] [Intercept] [Dismiss]." Not just a notification. Only alerts above the AI confidence threshold reach the operator.</td>
+        <td><span class="chip">Elysion</span> <span class="chip">DroneSentry-C2</span> <span class="chip">Walaris</span></td>
+      </tr>
+      <tr>
+        <td><strong>Layout modes</strong></td>
+        <td>3 presets: Monitor (large map + small video strip), Verify (map + large video side-by-side), Intercept (map + drone cam + actions panel). Switches automatically with operational mode.</td>
+        <td><span class="chip">Eyeson</span> <span class="chip">DroneSentry-C2</span></td>
+      </tr>
+      <tr>
+        <td><strong>Video quality</strong></td>
+        <td>Quality badge on every feed: 🟢 HD / 🟡 SD / 🔴 Degraded / ⬛ Lost. In degraded connectivity scenarios (Silvus mesh fallback), operator always knows what they are seeing.</td>
+        <td><span class="chip">Eyeson</span> <span class="chip">DroneSentry-C2</span></td>
+      </tr>
+      <tr>
+        <td><strong>SDR sensor output</strong></td>
+        <td>Each SDR adapter must output normalized detection events: position (lat/lon/alt), speed, heading, operator position (if available), confidence %, drone type/serial. UI never shows raw spectrum data.</td>
+        <td><span class="chip">Aaronia</span> <span class="chip">Sentrycs</span></td>
+      </tr>
+      <tr>
+        <td><strong>Replay / black box</strong></td>
+        <td>Incident replay is an investigation workflow: timestamped event timeline, scrubable, correlated sensor confidence at each moment, operator action log, track playback. Not just video playback.</td>
+        <td><span class="chip">Iris Casia</span> <span class="chip">DroneSentry-C2</span></td>
+      </tr>
+      <tr>
+        <td><strong>Network resilience</strong></td>
+        <td>Backend is transport-agnostic: works over internet, LTE, local ethernet, or Silvus MANET mesh equally. UI shows active transport type and quality. Zero hardcoded latency assumptions.</td>
+        <td><span class="chip">Silvus</span> <span class="chip">Eyeson</span></td>
+      </tr>
+      <tr>
+        <td><strong>Tablet adaptation</strong></td>
+        <td>Map stays dominant. Actions + device strip collapse into swipe-up drawer. Camera feed = PiP overlay on map. All touch targets ≥ 48px. Identical feature set, adapted layout.</td>
+        <td><span class="chip">DroneSentry-C2</span> <span class="chip">XTEND XOS</span> <span class="chip">AMC</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- ═══════════════════════════════ ANTI-PATTERNS ═══════════════════════════════ -->
+<div class="section" id="antipatterns">
+  <div class="section-eyebrow"><span class="num">—</span> What to avoid</div>
+  <h2>Anti-Patterns Observed in Competitive Solutions</h2>
+  <div class="section-desc">UX failures documented across 11 systems — patterns our system must not replicate.</div>
+  <div class="divider"></div>
+  <div class="antipattern-list">
+    <div class="antipattern-item">
+      <div class="anti-x">✕</div>
+      <div class="anti-text"><strong>Free-form window management.</strong> Cambridge Pixel VSD allows unlimited customisation. Under stress, operators waste time on window arrangement. Our system locks layouts to 3 presets that change automatically with operational mode.</div>
+    </div>
+    <div class="antipattern-item">
+      <div class="anti-x">✕</div>
+      <div class="anti-text"><strong>Raw multi-sensor data exposed to the operator.</strong> Separate radar, RF, and acoustic events per sensor forces mental fusion under time pressure. Our system always fuses server-side; operator sees one object per threat.</div>
+    </div>
+    <div class="antipattern-item">
+      <div class="anti-x">✕</div>
+      <div class="anti-text"><strong>Video on a separate screen from the map.</strong> If the operator must navigate away from the map to see the camera feed, they lose positional context. Our system keeps video embedded in the same view at all times.</div>
+    </div>
+    <div class="antipattern-item">
+      <div class="anti-x">✕</div>
+      <div class="anti-text"><strong>Silent video degradation.</strong> A frozen or low-quality frame with no indicator is worse than no feed — the operator may act on stale information. Our system always declares stream quality explicitly on every feed.</div>
+    </div>
+    <div class="antipattern-item">
+      <div class="anti-x">✕</div>
+      <div class="anti-text"><strong>Alerts without decision prompts.</strong> "Drone detected" with no guided next action forces operators to recall workflow under pressure. Every alert in our system suggests a next action and is framed as a decision, not a notification.</div>
+    </div>
+    <div class="antipattern-item">
+      <div class="anti-x">✕</div>
+      <div class="anti-text"><strong>Platform-level commands instead of mission-level.</strong> Requiring operators to select a specific drone and enter coordinates manually is error-prone and slow. Our system abstracts to "Intercept target X" — the backend resolves the assignment.</div>
+    </div>
+    <div class="antipattern-item">
+      <div class="anti-x">✕</div>
+      <div class="anti-text"><strong>Exposing raw RF/spectrum data to operators.</strong> Aaronia's RTSA-Suite PRO is an excellent tool for RF engineers, not operators. Our system consumes expert sensor data and surfaces only the meaningful result: position, confidence, classification.</div>
+    </div>
+    <div class="antipattern-item">
+      <div class="anti-x">✕</div>
+      <div class="anti-text"><strong>Replay as video-only playback.</strong> Incident review must be an investigation workflow with a scrubable event timeline, sensor confidence history, and operator action log — not just pressing play on a recording. Design this from day one.</div>
+    </div>
+  </div>
+</div>
+
+<div class="footnote">
+  <span>Counter-UAS Control Center — UX/UI Research Reference · 11 systems · Combined analysis</span>
+  <span>Compiled from two research threads · March 2026</span>
+</div>
+
+
+<div class="footnote">
+  <span>Counter-UAS Control Center — UX/UI Research Reference · 11 systems · Combined analysis</span>
+  <span>Compiled from two research threads · March 2026</span>
+</div>
+
+</main>
+
+<script>
+function pickImage(slotId) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.onchange = function() {
+    if (!this.files || !this.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const slot = document.getElementById(slotId);
+      slot.innerHTML = '<img src="' + e.target.result + '" style="width:100%;border-radius:6px;display:block;">';
+      slot.style.cssText = 'border:none;padding:0;background:transparent;cursor:pointer;display:block;width:100%;min-height:unset';
+    };
+    reader.readAsDataURL(this.files[0]);
+  };
+  input.click();
+}
+</script>
+</body>
+</html>
